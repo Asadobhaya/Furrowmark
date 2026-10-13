@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { listOrdersAwaitingStaff } from "@/modules/orders/queries";
 import { requireStaffPermission } from "@/modules/web/session";
 import {
@@ -21,13 +22,33 @@ export default async function StaffOrdersPage({ searchParams }: Props) {
 
   return (
     <main className="p-4 max-w-4xl mx-auto">
-      <div className="flex items-center mb-4">
-        <h1 className="text-2xl font-bold">Orders awaiting action</h1>
-        <form action={staffLogoutAction} className="ml-auto">
-          <button type="submit" className="text-sm underline">
-            Sign out
-          </button>
-        </form>
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-4 border-b pb-4">
+        <div>
+          <h1 className="text-2xl font-bold">Orders awaiting action</h1>
+          <p className="text-sm text-gray-600">Review advance payments and confirm COD orders</p>
+        </div>
+        <div className="flex items-center space-x-4">
+          <Link href="/staff/products" className="text-sm underline">
+            Products
+          </Link>
+          <Link href="/staff/orders" className="text-sm font-semibold text-green-700 underline">
+            Orders
+          </Link>
+          <Link href="/staff/fulfilment" className="text-sm underline">
+            Fulfilment
+          </Link>
+          <Link href="/staff/returns" className="text-sm underline">
+            RMA Returns
+          </Link>
+          <Link href="/staff/reports" className="text-sm underline">
+            Reports
+          </Link>
+          <form action={staffLogoutAction}>
+            <button type="submit" className="text-sm underline text-red-700">
+              Sign out
+            </button>
+          </form>
+        </div>
       </div>
       {error && (
         <p role="alert" className="mb-4 text-red-700">

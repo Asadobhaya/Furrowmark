@@ -1,4 +1,4 @@
-import { eq, and, sql } from "drizzle-orm";
+import { eq, and, sql, desc } from "drizzle-orm";
 import { getDb } from "../database";
 import {
   products,
@@ -6,6 +6,7 @@ import {
   brands,
   categories,
   searchQueries,
+  priceHistory,
 } from "./schema";
 
 export interface CatalogFilter {
@@ -149,3 +150,221 @@ export async function getProductById(
     })),
   };
 }
+
+export interface StaffProductRow {
+  id: string;
+  name: string;
+  slug: string;
+  className: string;
+  status: "draft" | "in_review" | "published" | "archived";
+  brandName: string;
+  categoryName: string;
+  description: string;
+  createdAt: Date;
+  variants: {
+    id: string;
+    sku: string;
+    packSize: string;
+    priceMinor: number;
+    isActive: boolean;
+  }[];
+}
+
+export async function listAllStaffProducts(): Promise<StaffProductRow[]> {
+  const db = getDb();
+  const rows = await db
+    .select({
+      id: products.id,
+      name: products.name,
+      slug: products.slug,
+      className: products.class,
+      status: products.status,
+      brandName: brands.name,
+      categoryName: categories.name,
+      description: products.description,
+      createdAt: products.createdAt,
+    })
+    .from(products)
+    .innerJoin(brands, eq(products.brandId, brands.id))
+    .innerJoin(categories, eq(products.categoryId, categories.id))
+    .orderBy(desc(products.createdAt));
+
+  const allVariants = await db
+    .select({
+      id: variants.id,
+      productId: variants.productId,
+      sku: variants.sku,
+      packSize: variants.packSize,
+      priceMinor: variants.priceMinor,
+      isActive: variants.isActive,
+    })
+    .from(variants);
+
+  const variantsByProduct = new Map<string, typeof allVariants>();
+  for (const v of allVariants) {
+    const list = variantsByProduct.get(v.productId) ?? [];
+    list.push(v);
+    variantsByProduct.set(v.productId, list);
+  }
+
+  return rows.map((r) => ({
+    ...r,
+    variants: (variantsByProduct.get(r.id) ?? []).map((v) => ({
+      ...v,
+      priceMinor: Number(v.priceMinor),
+    })),
+  }));
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export interface CreateProductInput {
+  name: string;
+  className: "seed" | "fertiliser" | "nutrient" | "pesticide" | "tool";
+  categoryName: string;
+  brandName: string;
+  packSize: string;
+  priceMinor: number;
+  description: string;
+  status?: "draft" | "published";
+}
+
+export async function createStaffProduct(
+  input: CreateProductInput,
+  authoredById: string,
+) {
+  const db = getDb();
+
+  // 1. Find or create category
+  let catSlug = slugify(input.categoryName);
+  if (!catSlug) catSlug = "category-" + Date.now();
+  let [cat] = await db
+    .select({ id: categories.id })
+    .from(categories)
+    .where(eq(categories.slug, catSlug));
+  if (!cat) {
+    const [newCat] = await db
+      .insert(categories)
+      .values({
+        name: input.categoryName.trim(),
+        slug: catSlug,
+      })
+      .returning({ id: categories.id });
+    cat = newCat!;
+  }
+
+  // 2. Find or create brand
+  let [br] = await db
+    .select({ id: brands.id })
+    .from(brands)
+    .where(eq(brands.name, input.brandName.trim()));
+  if (!br) {
+    const [newBr] = await db
+      .insert(brands)
+      .values({
+        name: input.brandName.trim(),
+        country: "Pakistan",
+      })
+      .returning({ id: brands.id });
+    br = newBr!;
+  }
+
+  // 3. Generate unique slug
+  let baseSlug = slugify(input.name);
+  if (!baseSlug) baseSlug = "product-" + Date.now();
+  let finalSlug = baseSlug;
+  const [existingSlug] = await db
+    .select({ id: products.id })
+    .from(products)
+    .where(eq(products.slug, finalSlug));
+  if (existingSlug) {
+    finalSlug = `${baseSlug}-${Math.random().toString(36).substring(2, 7)}`;
+  }
+
+  // 4. Insert product
+  const [newProd] = await db
+    .insert(products)
+    .values({
+      categoryId: cat.id,
+      brandId: br.id,
+      name: input.name.trim(),
+      slug: finalSlug,
+      class: input.className,
+      status: input.status ?? "published",
+      description: input.description.trim(),
+      countryOfOrigin: "Pakistan",
+      authoredBy: authoredById,
+      publishedBy: input.status === "draft" ? null : authoredById,
+      publishedAt: input.status === "draft" ? null : new Date(),
+    })
+    .returning({ id: products.id });
+
+  // 5. Generate SKU
+  const skuPrefix = input.className.substring(0, 3).toUpperCase();
+  const skuRand = Math.random().toString(36).substring(2, 6).toUpperCase();
+  const sku = `${skuPrefix}-${skuRand}`;
+
+  // Parse pack size value & unit
+  const match = input.packSize.match(/^(\d+(?:\.\d+)?)\s*([a-zA-Z]+)?/);
+  const packVal = match ? Math.round(parseFloat(match[1])) : 1;
+  const packUnit = match && match[2] ? match[2].toLowerCase() : "unit";
+
+  const [newVar] = await db
+    .insert(variants)
+    .values({
+      productId: newProd!.id,
+      sku,
+      packSize: input.packSize.trim(),
+      packSizeValue: packVal,
+      packSizeUnit: packUnit,
+      priceMinor: input.priceMinor,
+      currency: "PKR",
+      isActive: true,
+    })
+    .returning({ id: variants.id });
+
+  // 6. Record price history
+  await db.insert(priceHistory).values({
+    variantId: newVar!.id,
+    priceMinor: input.priceMinor,
+    currency: "PKR",
+    changedBy: authoredById,
+  });
+
+  return newProd!;
+}
+
+export async function updateProductStatus(
+  productId: string,
+  status: "draft" | "in_review" | "published" | "archived",
+) {
+  const db = getDb();
+  await db
+    .update(products)
+    .set({
+      status,
+      updatedAt: new Date(),
+    })
+    .where(eq(products.id, productId));
+}
+
+export async function deleteStaffProduct(productId: string) {
+  const db = getDb();
+  try {
+    await db.delete(products).where(eq(products.id, productId));
+    return { success: true, archived: false };
+  } catch {
+    await db
+      .update(products)
+      .set({ status: "archived", updatedAt: new Date() })
+      .where(eq(products.id, productId));
+    return { success: true, archived: true };
+  }
+}
+

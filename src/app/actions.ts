@@ -633,3 +633,101 @@ export async function resolveReturnAction(formData: FormData) {
   }
   redirect("/staff/returns");
 }
+
+// ---------- Staff Product Administration ----------
+
+const CreateProductSchema = z.object({
+  name: z.string().trim().min(2, "Product name must be at least 2 characters"),
+  className: z.enum(["seed", "fertiliser", "nutrient", "pesticide", "tool"]),
+  categoryName: z.string().trim().min(2, "Category name is required"),
+  brandName: z.string().trim().min(2, "Brand name is required"),
+  packSize: z.string().trim().min(1, "Pack size is required"),
+  priceMinor: z.coerce.number().int().min(1, "Price must be at least 1 PKR"),
+  description: z.string().trim().min(5, "Description must be at least 5 characters"),
+  status: z.enum(["draft", "published"]).default("published"),
+});
+
+export async function createProductAction(formData: FormData) {
+  const staff = await requireStaffPermission("catalog:write");
+  if (!staff) redirect("/staff/login");
+
+  const parsed = CreateProductSchema.safeParse({
+    name: str(formData, "name"),
+    className: str(formData, "className"),
+    categoryName: str(formData, "categoryName"),
+    brandName: str(formData, "brandName"),
+    packSize: str(formData, "packSize"),
+    priceMinor: str(formData, "priceMinor"),
+    description: str(formData, "description"),
+    status: str(formData, "status") || "published",
+  });
+
+  if (!parsed.success) {
+    fail(
+      "/staff/products",
+      parsed.error.issues[0]?.message ?? "Invalid product details",
+    );
+  }
+
+  try {
+    const { createStaffProduct } = await import("@/modules/catalog/service");
+    await createStaffProduct(parsed.data, staff.userId);
+  } catch (e) {
+    fail(
+      "/staff/products",
+      e instanceof Error ? e.message : "Could not create product",
+    );
+  }
+  redirect("/staff/products");
+}
+
+export async function updateProductStatusAction(formData: FormData) {
+  const staff = await requireStaffPermission("catalog:write");
+  if (!staff) redirect("/staff/login");
+
+  const productId = str(formData, "productId");
+  const status = str(formData, "status") as "draft" | "published" | "archived";
+
+  if (!productId || !status) {
+    fail("/staff/products", "Missing product ID or status");
+  }
+
+  try {
+    const { updateProductStatus } = await import("@/modules/catalog/service");
+    await updateProductStatus(productId, status);
+  } catch (e) {
+    fail(
+      "/staff/products",
+      e instanceof Error ? e.message : "Could not update status",
+    );
+  }
+  redirect("/staff/products");
+}
+
+export async function deleteProductAction(formData: FormData) {
+  const staff = await requireStaffPermission("catalog:write");
+  if (!staff) redirect("/staff/login");
+
+  const productId = str(formData, "productId");
+  if (!productId) {
+    fail("/staff/products", "Missing product ID");
+  }
+
+  try {
+    const { deleteStaffProduct } = await import("@/modules/catalog/service");
+    const res = await deleteStaffProduct(productId);
+    if (res.archived) {
+      redirect(
+        "/staff/products?error=" +
+          encodeURIComponent("Item has order history and was archived instead of deleted."),
+      );
+    }
+  } catch (e) {
+    fail(
+      "/staff/products",
+      e instanceof Error ? e.message : "Could not delete product",
+    );
+  }
+  redirect("/staff/products");
+}
+

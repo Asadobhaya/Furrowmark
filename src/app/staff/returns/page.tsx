@@ -49,11 +49,17 @@ export default async function StaffReturnsPage({ searchParams }: Props) {
           </p>
         </div>
         <div className="ml-auto flex items-center space-x-4">
+          <Link href="/staff/products" className="text-sm underline">
+            Products
+          </Link>
           <Link href="/staff/orders" className="text-sm underline">
             Orders
           </Link>
           <Link href="/staff/fulfilment" className="text-sm underline">
             Fulfilment
+          </Link>
+          <Link href="/staff/returns" className="text-sm font-semibold text-green-700 underline">
+            RMA Returns
           </Link>
           <Link href="/staff/reports" className="text-sm underline">
             Reports
