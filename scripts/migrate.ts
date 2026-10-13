@@ -783,14 +783,20 @@ async function migrate() {
       CREATE INDEX IF NOT EXISTS idx_support_tickets_num ON support_tickets(ticket_number);
     `);
 
-    // Enforce least privilege runtime permissions: revoke UPDATE/DELETE on immutable ledgers
+    // Enforce least privilege runtime permissions if app_runtime role exists (e.g. on dedicated servers)
     await client.query(`
-      GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO app_runtime;
-      REVOKE UPDATE, DELETE ON audit_log FROM app_runtime;
-      REVOKE UPDATE, DELETE ON stock_ledger FROM app_runtime;
-      REVOKE UPDATE, DELETE ON order_events FROM app_runtime;
-      REVOKE UPDATE, DELETE ON store_credit_ledger FROM app_runtime;
-      GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_runtime;
+      DO $$
+      BEGIN
+        IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'app_runtime') THEN
+          GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO app_runtime;
+          REVOKE UPDATE, DELETE ON audit_log FROM app_runtime;
+          REVOKE UPDATE, DELETE ON stock_ledger FROM app_runtime;
+          REVOKE UPDATE, DELETE ON order_events FROM app_runtime;
+          REVOKE UPDATE, DELETE ON store_credit_ledger FROM app_runtime;
+          GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_runtime;
+        END IF;
+      END
+      $$;
     `);
 
     await client.query("COMMIT");
