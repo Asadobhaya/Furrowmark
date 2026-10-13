@@ -1,0 +1,24 @@
+/* Design tokens as CSS variables. Mirrors src/design/tokens.ts (flat colors, no gradients). */
+:root {
+  --color-primary: #1c4d25;
+  --color-primary-dark: #133519;
+  --color-primary-light: #286b34;
+  --color-on-primary: #ffffff;
+  --color-accent: #8b5a2b;
+  --color-accent-hover: #734a23;
+  --color-on-accent: #ffffff;
+  --color-neutral-50: #f8f9f8;
+  --color-neutral-100: #f0f2f0;
+  --color-neutral-200: #e1e4e1;
+  --color-neutral-300: #c5c9c5;
+  --color-neutral-400: #949a94;
+  --color-neutral-500: #6d736d;
+  --color-neutral-600: #525752;
+  --color-neutral-700: #3a3e3a;
+  --color-neutral-800: #262926;
+  --color-neutral-900: #141614;
+  --color-success: #1c4d25;
+  --color-error: #b91c1c;
+  --color-warning: #92400e;
+  --color-info: #1e40af;
+}

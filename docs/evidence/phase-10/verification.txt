@@ -1,0 +1,50 @@
+================================================================================
+FURROWMARK PHASE 10 VERIFICATION REPORT
+Generated at: 2026-10-14T00:12:00+05:00
+Environment: Linux x64 / Node.js v24.21.0 / Next.js 16.4.0 / PostgreSQL Embedded
+================================================================================
+
+1. PRE-LAUNCH ORCHESTRATED GATES (scripts/prelaunch-check.sh)
+$ ./scripts/prelaunch-check.sh
+============================================================
+RUNNING FURROWMARK PRE-LAUNCH CHECKLIST & GATES
+============================================================
+1. Checking npm audit for dependency vulnerabilities...
+found 0 vulnerabilities
+2. Running TypeScript static typecheck (tsc --noEmit)...
+Status: PASSED (0 errors)
+3. Running ESLint...
+Status: PASSED (0 warnings, 0 errors)
+4. Checking code formatting (prettier --check)...
+Status: PASSED (All files match formatting standard)
+5. Scanning codebase for banned words, em-dashes, and emoji...
+Content scan clean: 201 files verified against banned patterns and words.
+Status: PASSED
+6. Running automated test suite (vitest run)...
+Test Files: 19 passed (19)
+Tests:      97 passed (97)
+Duration:   20.02s
+Status:     PASSED (100% pass rate)
+7. Verifying Next.js optimized production build (next build)...
+Status:     PASSED (Optimized build emitted successfully)
+============================================================
+ALL PRE-LAUNCH PRODUCTION GATES PASSED SUCCESSFULLY!
+System is verified for live deployment.
+============================================================
+
+2. DOMAIN, DNS & TLS SPECIFICATION
+Verified in `docs/dns-and-tls.md`:
+  - Apex A/AAAA and CNAME redirect architecture
+  - CAA issuance restrictions (Let's Encrypt only, no wildcard)
+  - Strict SPF policy
+  - Enforcing DMARC reject policy (p=reject)
+  - DKIM authentication
+  - HSTS preload configuration (max-age=63072000)
+
+3. ENVIRONMENT SPECIFICATION & VALIDATION
+Verified in `src/modules/config/env.test.ts`:
+  - Enforces STORE_NAME = "Furrowmark"
+  - Enforces STORE_CURRENCY = "PKR"
+  - Enforces STORE_TIME_ZONE = "Asia/Karachi"
+  - Validates 32-byte cryptographic keys for SESSION_SECRET & FIELD_ENCRYPTION_KEY
+================================================================================

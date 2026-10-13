@@ -1,0 +1,72 @@
+=== FURROWMARK PHASE 2 FULL VERIFICATION SUITE ===
+Timestamp: 2026-10-12T21:07:23Z
+
+--- 1. NPM AUDIT ---
+found 0 vulnerabilities
+
+--- 2. TYPESCRIPT TYPE CHECK ---
+TypeScript exit status: 0
+
+--- 3. ESLINT ---
+ESLint exit status: 0
+
+--- 4. PRETTIER CODE STYLE ---
+Checking formatting...
+All matched files use Prettier code style!
+Prettier exit status: 0
+
+--- 5. BANNED CONTENT & VOCABULARY SCANNER ---
+Content scan clean: 71 files verified against banned patterns and words.
+Banned content scanner exit status: 0
+
+--- 6. VITEST RUN WITH COVERAGE ---
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.4 /mnt/c/Users/Malik Bahawal Shair/Desktop/Agricultural Buissness
+      Coverage enabled with v8
+
+ ✓ src/modules/security/headers.test.ts (5 tests) 10ms
+ ✓ src/modules/rbac/permissions.test.ts (6 tests) 18ms
+ ✓ src/modules/auth/crypto.test.ts (8 tests) 331ms
+ ✓ src/modules/auth/session.test.ts (6 tests) 306ms
+ ✓ src/modules/audit/service.test.ts (3 tests) 133ms
+ ✓ src/modules/publishing/service.test.ts (6 tests) 450ms
+ ✓ src/design/tokens.test.ts (5 tests) 11ms
+ ✓ src/modules/catalog/service.test.ts (3 tests) 317ms
+ ✓ src/modules/inventory/service.test.ts (6 tests) 209ms
+
+ Test Files  9 passed (9)
+      Tests  48 passed (48)
+   Start at  02:09:28
+   Duration  8.17s (import 77%, transform 9%, worker 8%, tests 5%, setup 1%)
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   88.84 |       80 |   93.93 |   88.98 |                   
+ design            |     100 |      100 |     100 |     100 |                   
+  tokens.ts        |     100 |      100 |     100 |     100 |                   
+ modules/audit     |     100 |      100 |     100 |     100 |                   
+  service.ts       |     100 |      100 |     100 |     100 |                   
+ modules/auth      |   97.43 |    95.23 |     100 |   97.43 |                   
+  crypto.ts        |   95.74 |     92.3 |     100 |   95.74 | 30,49             
+  session.ts       |     100 |      100 |     100 |     100 |                   
+ modules/catalog   |   93.33 |    85.71 |     100 |   92.85 |                   
+  service.ts       |   93.33 |    85.71 |     100 |   92.85 | 39                
+ modules/config    |   72.72 |       75 |      50 |   72.72 |                   
+  env.ts           |   72.72 |       75 |      50 |   72.72 | 31-34             
+ modules/database  |    62.5 |       50 |   66.66 |    62.5 |                   
+  index.ts         |    62.5 |       50 |   66.66 |    62.5 | 21-28,37-38       
+ modules/inventory |   93.75 |       80 |     100 |   96.66 |                   
+  service.ts       |   93.75 |       80 |     100 |   96.66 | 119               
+ ...les/publishing |   83.78 |    75.94 |     100 |   83.09 |                   
+  service.ts       |   83.78 |    75.94 |     100 |   83.09 | ...03,160,165,180 
+ modules/rbac      |   85.71 |       75 |     100 |   85.71 |                   
+  permissions.ts   |   85.71 |       75 |     100 |   85.71 | 109               
+ modules/security  |     100 |      100 |     100 |     100 |                   
+  headers.ts       |     100 |      100 |     100 |     100 |                   
+-------------------|---------|----------|---------|---------|-------------------
+Vitest coverage exit status: 0

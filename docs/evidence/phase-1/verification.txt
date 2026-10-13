@@ -1,0 +1,60 @@
+=== Phase 1 Evidence Report ===
+Date (UTC): Mon Oct 12 20:33:23 UTC 2026
+
+--- Dependency Audit ---
+found 0 vulnerabilities
+
+--- Typecheck (tsc --noEmit) ---
+TypeScript validation passed: 0 errors.
+
+--- Linter (eslint .) ---
+ESLint validation passed: 0 warnings, 0 errors.
+
+--- Code Formatter (prettier --check .) ---
+Checking formatting...
+All matched files use Prettier code style!
+
+--- Banned Content Scanner ---
+Content scan clean: 54 files verified against banned patterns and words.
+
+--- Test Suite Execution & Coverage Report ---
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.4 /mnt/c/Users/Malik Bahawal Shair/Desktop/Agricultural Buissness
+      Coverage enabled with v8
+
+ ✓ src/modules/rbac/permissions.test.ts (6 tests) 15ms
+ ✓ src/modules/security/headers.test.ts (5 tests) 12ms
+ ✓ src/design/tokens.test.ts (5 tests) 10ms
+ ✓ src/modules/auth/crypto.test.ts (8 tests) 269ms
+ ✓ src/modules/audit/service.test.ts (3 tests) 98ms
+ ✓ src/modules/auth/session.test.ts (6 tests) 208ms
+
+ Test Files  6 passed (6)
+      Tests  33 passed (33)
+   Start at  01:34:08
+   Duration  5.45s (import 67%, transform 18%, worker 8%, tests 4%, setup 2%)
+
+ % Coverage report from v8
+------------------|---------|----------|---------|---------|-------------------
+File              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+------------------|---------|----------|---------|---------|-------------------
+All files         |   90.08 |     85.1 |    90.9 |   90.08 |                   
+ design           |     100 |      100 |     100 |     100 |                   
+  tokens.ts       |     100 |      100 |     100 |     100 |                   
+ modules/audit    |     100 |      100 |     100 |     100 |                   
+  service.ts      |     100 |      100 |     100 |     100 |                   
+ modules/auth     |   97.43 |    95.23 |     100 |   97.43 |                   
+  crypto.ts       |   95.74 |     92.3 |     100 |   95.74 | 30,49             
+  session.ts      |     100 |      100 |     100 |     100 |                   
+ modules/config   |   72.72 |       75 |      50 |   72.72 |                   
+  env.ts          |   72.72 |       75 |      50 |   72.72 | 31-34             
+ modules/database |    62.5 |       50 |   66.66 |    62.5 |                   
+  index.ts        |    62.5 |       50 |   66.66 |    62.5 | 21-28,37-38       
+ modules/rbac     |   85.71 |       75 |     100 |   85.71 |                   
+  permissions.ts  |   85.71 |       75 |     100 |   85.71 | 109               
+ modules/security |     100 |      100 |     100 |     100 |                   
+  headers.ts      |     100 |      100 |     100 |     100 |                   
+------------------|---------|----------|---------|---------|-------------------

@@ -1,0 +1,90 @@
+=== PHASE 6 VERIFICATION EVIDENCE ===
+2026-10-13T17:12:29Z
+
+--- 1. NPM AUDIT ---
+found 0 vulnerabilities
+
+--- 2. TYPESCRIPT TYPE CHECK ---
+TypeScript check clean
+
+--- 3. ESLINT ---
+ESLint clean
+
+--- 4. PRETTIER ---
+Checking formatting...
+All matched files use Prettier code style!
+
+--- 5. BANNED CONTENT SCAN ---
+Content scan clean: 148 files verified against banned patterns and words.
+
+--- 6. VITEST TEST SUITE ---
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.4 /mnt/c/Users/Malik Bahawal Shair/Desktop/Agricultural Buissness
+
+ ✓ src/modules/auth/crypto.test.ts (8 tests) 312ms
+ ✓ src/modules/catalog/service.test.ts (3 tests) 374ms
+ ✓ src/modules/inventory/service.test.ts (6 tests) 495ms
+ ✓ src/modules/publishing/service.test.ts (6 tests) 521ms
+ ✓ src/modules/cart/service.test.ts (4 tests) 403ms
+ ✓ src/modules/orders/service.test.ts (4 tests) 496ms
+ ✓ src/modules/pricing/service.test.ts (9 tests) 16ms
+ ✓ src/modules/fulfilment/service.test.ts (5 tests) 422ms
+ ✓ src/modules/security/headers.test.ts (5 tests) 13ms
+ ✓ src/modules/rbac/permissions.test.ts (6 tests) 14ms
+ ✓ src/modules/notifications/service.test.ts (8 tests) 170ms
+ ✓ src/modules/auth/session.test.ts (6 tests) 262ms
+ ✓ src/design/tokens.test.ts (5 tests) 8ms
+ ✓ src/modules/payments/service.test.ts (4 tests) 265ms
+ ✓ src/modules/audit/service.test.ts (3 tests) 84ms
+ ✓ src/modules/auth/ratelimit.test.ts (4 tests) 83ms
+
+ Test Files  16 passed (16)
+      Tests  86 passed (86)
+   Start at  22:13:55
+   Duration  12.85s (import 83%, transform 7%, tests 6%, worker 3%, setup 1%)
+
+    Isolate  16 workers spawned · ~1.03s startup each (spawn + environment, per file)
+             at least ~1.33s faster with isolate: false — reuses workers across files instead of one per file
+
+
+--- 7. NEXT BUILD ---
+▲ Next.js 16.4.0 (Turbopack)
+- Environments: .env.local, .env
+✓ Running next.config took 687ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 16.0s
+  Running TypeScript ...
+  Finished TypeScript in 19.4s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/4) ...
+  Generating static pages using 7 workers (1/4) 
+  Generating static pages using 7 workers (2/4) 
+  Generating static pages using 7 workers (3/4) 
+✓ Generating static pages using 7 workers (4/4) in 725ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/orders
+├ ƒ /cart
+├ ƒ /checkout
+├ ƒ /login
+├ ƒ /orders/[id]
+├ ƒ /products
+├ ƒ /products/[id]
+├ ƒ /register
+├ ƒ /staff/fulfilment
+├ ƒ /staff/login
+├ ƒ /staff/orders
+├ ƒ /staff/reports
+└ ƒ /staff/returns
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

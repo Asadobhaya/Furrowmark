@@ -1,0 +1,9 @@
+Phase 0 doc scan
+Mon Oct 12 19:17:47 UTC 2026
+--- em/en dash matches (expect none)
+--- emoji matches (expect none)
+--- banned words (expect none beyond conflict quotes)
+docs/tooling.md:36:A scan script fails CI on: gradient functions, emoji ranges, the em dash and en dash characters, "Made with" and builder or AI tool strings, banned copy words, `dangerouslySetInnerHTML` without sanitiser, `TODO`, lorem ipsum. Extended to rendered HTML in Phase 8.
+--- done
+--- source files (expect none)
+scan complete
