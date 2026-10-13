@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "npx tsx scripts/migrate.ts && npm run build"
   publish = ".next"
 
 [build.environment]
