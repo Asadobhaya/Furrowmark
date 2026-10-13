@@ -50,13 +50,33 @@ function fail(path: string, message: string, extra = ""): never {
 
 // ---------- Cart ----------
 
+const CartItemInputSchema = z.object({
+  variantId: z.string().uuid("Invalid variant ID"),
+  quantity: z.coerce.number().int().min(1).max(500),
+});
+
+const CartUpdateInputSchema = z.object({
+  variantId: z.string().uuid("Invalid variant ID"),
+  quantity: z.coerce.number().int().min(0).max(500),
+});
+
 export async function addToCartAction(formData: FormData) {
-  const variantId = str(formData, "variantId");
-  const quantity = Number.parseInt(str(formData, "quantity"), 10);
   const back = safeNext(str(formData, "back"), "/products");
+  const parsed = CartItemInputSchema.safeParse({
+    variantId: str(formData, "variantId"),
+    quantity: str(formData, "quantity"),
+  });
+  if (!parsed.success) {
+    fail(back, "Invalid product or quantity specified");
+  }
+
   try {
     const cartId = await getCartId(true);
-    await CartService.addItem({ cartId: cartId!, variantId, quantity });
+    await CartService.addItem({
+      cartId: cartId!,
+      variantId: parsed.data.variantId,
+      quantity: parsed.data.quantity,
+    });
   } catch (e) {
     fail(back, e instanceof Error ? e.message : "Could not add to cart");
   }
@@ -64,17 +84,23 @@ export async function addToCartAction(formData: FormData) {
 }
 
 export async function updateCartAction(formData: FormData) {
-  const variantId = str(formData, "variantId");
-  const quantity = Number.parseInt(str(formData, "quantity"), 10);
+  const parsed = CartUpdateInputSchema.safeParse({
+    variantId: str(formData, "variantId"),
+    quantity: str(formData, "quantity"),
+  });
+  if (!parsed.success) {
+    fail("/cart", "Invalid product or quantity specified");
+  }
+
   try {
     const cartId = await getCartId(true);
-    if (Number.isNaN(quantity) || quantity <= 0) {
-      await CartService.removeItem(cartId!, variantId);
+    if (parsed.data.quantity <= 0) {
+      await CartService.removeItem(cartId!, parsed.data.variantId);
     } else {
       await CartService.updateItemQuantity({
         cartId: cartId!,
-        variantId,
-        quantity,
+        variantId: parsed.data.variantId,
+        quantity: parsed.data.quantity,
       });
     }
   } catch (e) {
@@ -119,6 +145,12 @@ export async function loginAction(formData: FormData) {
     windowSeconds: 900,
   });
   if (!rateCheck.allowed) {
+    await logAudit({
+      action: "security.rate_limit_exceeded",
+      entity: "auth_customer",
+      entityId: parsed.data.email,
+      ...meta,
+    });
     fail(
       "/login",
       `Too many failed attempts. Please try again in ${Math.ceil((rateCheck.retryAfterSeconds ?? 900) / 60)} minutes.`,
@@ -137,15 +169,49 @@ export async function loginAction(formData: FormData) {
 
   if (!ok) {
     await recordAttempt({ key: limitKey, outcome: "failure" });
+    await logAudit({
+      action: "auth.login_failed",
+      entity: "user",
+      entityId: parsed.data.email,
+      ...meta,
+    });
     fail("/login", "Invalid email or password");
   }
 
   await recordAttempt({ key: limitKey, outcome: "success" });
+  await logAudit({
+    actorId: user!.id,
+    action: "auth.login_success",
+    entity: "user",
+    entityId: user!.id,
+    ...meta,
+  });
   await startCustomerSession(user!.id);
   redirect(next);
 }
 
 export async function registerAction(formData: FormData) {
+  const meta = await getClientMeta();
+
+  // Rate limit: 5 account creations per 15 minutes per IP to prevent mass bot registration
+  const registerLimitKey = `register:${meta.ip}`;
+  const rateCheck = await checkRateLimit({
+    key: registerLimitKey,
+    maxAttempts: 5,
+    windowSeconds: 900,
+  });
+  if (!rateCheck.allowed) {
+    await logAudit({
+      action: "security.rate_limit_exceeded",
+      entity: "auth_register",
+      ...meta,
+    });
+    fail(
+      "/register",
+      `Too many registration attempts from this network. Please try again in ${Math.ceil((rateCheck.retryAfterSeconds ?? 900) / 60)} minutes.`,
+    );
+  }
+
   const parsed = CredentialsSchema.safeParse({
     email: str(formData, "email"),
     password: str(formData, "password"),
@@ -155,6 +221,7 @@ export async function registerAction(formData: FormData) {
   // ASVS L2: Check for breached password
   const breached = await isPasswordBreached(parsed.data.password);
   if (breached) {
+    await recordAttempt({ key: registerLimitKey, outcome: "failure" });
     fail(
       "/register",
       "This password has appeared in a known public data breach. Please choose a different, more secure password.",
@@ -170,6 +237,7 @@ export async function registerAction(formData: FormData) {
       .returning();
     userId = created!.id;
   } catch (e) {
+    await recordAttempt({ key: registerLimitKey, outcome: "failure" });
     const msg = e instanceof Error ? e.message : "";
     fail(
       "/register",
@@ -178,14 +246,34 @@ export async function registerAction(formData: FormData) {
         : "Could not create account (email may already be registered)",
     );
   }
+
+  await recordAttempt({ key: registerLimitKey, outcome: "success" });
+  await logAudit({
+    actorId: userId,
+    action: "auth.register_success",
+    entity: "user",
+    entityId: userId,
+    ...meta,
+  });
   await startCustomerSession(userId);
   redirect("/products");
 }
 
 export async function logoutAction() {
+  const session = await getCustomerSession();
   const token = await getRawCookie(CUSTOMER_COOKIE);
   if (token) await revokeSession(token);
   await clearCookie(CUSTOMER_COOKIE);
+  if (session) {
+    const meta = await getClientMeta();
+    await logAudit({
+      actorId: session.userId,
+      action: "auth.logout",
+      entity: "user",
+      entityId: session.userId,
+      ...meta,
+    });
+  }
   redirect("/login");
 }
 
@@ -241,6 +329,12 @@ export async function staffLoginAction(formData: FormData) {
     windowSeconds: 900,
   });
   if (!rateCheck.allowed) {
+    await logAudit({
+      action: "security.rate_limit_exceeded",
+      entity: "auth_staff",
+      entityId: parsed.data.email,
+      ...meta,
+    });
     fail(
       "/staff/login",
       `Too many failed attempts. Please try again in ${Math.ceil((rateCheck.retryAfterSeconds ?? 900) / 60)} minutes.`,
@@ -259,10 +353,23 @@ export async function staffLoginAction(formData: FormData) {
 
   if (!ok) {
     await recordAttempt({ key: limitKey, outcome: "failure" });
+    await logAudit({
+      action: "auth.staff_login_failed",
+      entity: "staff",
+      entityId: parsed.data.email,
+      ...meta,
+    });
     fail("/staff/login", "Invalid credentials");
   }
 
   await recordAttempt({ key: limitKey, outcome: "success" });
+  await logAudit({
+    actorId: user!.id,
+    action: "auth.staff_login_success",
+    entity: "staff",
+    entityId: user!.id,
+    ...meta,
+  });
   const { rawToken } = await createSession(user!.id, "staff");
   await setCookie(STAFF_COOKIE, rawToken, 12 * 60 * 60);
   redirect("/staff/orders");
@@ -280,8 +387,20 @@ export async function confirmPaymentAction(formData: FormData) {
   const staff = await requireStaffPermission("orders:process");
   if (!staff) redirect("/staff/login");
 
-  const orderId = str(formData, "orderId");
-  const transactionReference = str(formData, "transactionReference").trim();
+  const parsed = z
+    .object({
+      orderId: z.string().uuid("Invalid order ID"),
+      transactionReference: z.string().trim().max(100).optional(),
+    })
+    .safeParse({
+      orderId: str(formData, "orderId"),
+      transactionReference: str(formData, "transactionReference") || undefined,
+    });
+  if (!parsed.success) {
+    fail("/staff/orders", "Invalid payment confirmation details");
+  }
+
+  const { orderId, transactionReference } = parsed.data;
   try {
     const result = await PaymentService.confirmManualPayment({
       orderId,
@@ -311,7 +430,14 @@ export async function acceptCodOrderAction(formData: FormData) {
   const staff = await requireStaffPermission("orders:process");
   if (!staff) redirect("/staff/login");
 
-  const orderId = str(formData, "orderId");
+  const parsed = OrderIdInputSchema.safeParse({
+    orderId: str(formData, "orderId"),
+  });
+  if (!parsed.success) {
+    fail("/staff/orders", "Invalid order ID");
+  }
+
+  const { orderId } = parsed.data;
   try {
     await OrderService.transitionOrderState({
       orderId,
@@ -339,13 +465,47 @@ export async function acceptCodOrderAction(formData: FormData) {
 
 // ---------- Phase 6: Fulfilment & RMA Actions ----------
 
+const OrderIdInputSchema = z.object({
+  orderId: z.string().uuid("Invalid order ID"),
+});
+
+const ShipmentIdInputSchema = z.object({
+  shipmentId: z.string().uuid("Invalid shipment ID"),
+});
+
+const DispatchInputSchema = z.object({
+  shipmentId: z.string().uuid("Invalid shipment ID"),
+  carrierName: z.string().trim().min(1).max(50),
+  trackingNumber: z.string().trim().min(1).max(100),
+  trackingUrl: z.string().url().max(500).optional().or(z.literal("")),
+});
+
+const ReturnResolveInputSchema = z.object({
+  returnRequestId: z.string().uuid("Invalid return request ID"),
+  resolution: z.enum([
+    "refund",
+    "replacement",
+    "store_credit",
+    "closed_no_action",
+  ]),
+  restockable: z.boolean(),
+  staffNotes: z.string().max(1000).default(""),
+});
+
 export async function createOrderShipmentsAction(formData: FormData) {
   const staff = await requireStaffPermission("orders:process");
   if (!staff) redirect("/staff/login");
-  const orderId = str(formData, "orderId");
+
+  const parsed = OrderIdInputSchema.safeParse({
+    orderId: str(formData, "orderId"),
+  });
+  if (!parsed.success) {
+    fail("/staff/fulfilment", "Invalid order ID specified");
+  }
+
   try {
     const { FulfilmentService } = await import("@/modules/fulfilment/service");
-    await FulfilmentService.createOrderShipments(orderId);
+    await FulfilmentService.createOrderShipments(parsed.data.orderId);
   } catch (e) {
     fail(
       "/staff/fulfilment",
@@ -358,10 +518,17 @@ export async function createOrderShipmentsAction(formData: FormData) {
 export async function packShipmentAction(formData: FormData) {
   const staff = await requireStaffPermission("orders:process");
   if (!staff) redirect("/staff/login");
-  const shipmentId = str(formData, "shipmentId");
+
+  const parsed = ShipmentIdInputSchema.safeParse({
+    shipmentId: str(formData, "shipmentId"),
+  });
+  if (!parsed.success) {
+    fail("/staff/fulfilment", "Invalid shipment ID specified");
+  }
+
   try {
     const { FulfilmentService } = await import("@/modules/fulfilment/service");
-    await FulfilmentService.packShipment(shipmentId, staff.userId);
+    await FulfilmentService.packShipment(parsed.data.shipmentId, staff.userId);
   } catch (e) {
     fail(
       "/staff/fulfilment",
@@ -374,20 +541,24 @@ export async function packShipmentAction(formData: FormData) {
 export async function dispatchShipmentAction(formData: FormData) {
   const staff = await requireStaffPermission("orders:process");
   if (!staff) redirect("/staff/login");
-  const shipmentId = str(formData, "shipmentId");
-  const carrierName = str(formData, "carrierName") || "ManualDispatch";
-  const trackingNumber = str(formData, "trackingNumber");
-  const trackingUrl = str(formData, "trackingUrl") || undefined;
-  if (!trackingNumber) {
-    fail("/staff/fulfilment", "Tracking number is required");
+
+  const parsed = DispatchInputSchema.safeParse({
+    shipmentId: str(formData, "shipmentId"),
+    carrierName: str(formData, "carrierName") || "ManualDispatch",
+    trackingNumber: str(formData, "trackingNumber"),
+    trackingUrl: str(formData, "trackingUrl") || undefined,
+  });
+  if (!parsed.success) {
+    fail("/staff/fulfilment", "Invalid tracking or shipment information");
   }
+
   try {
     const { FulfilmentService } = await import("@/modules/fulfilment/service");
     await FulfilmentService.dispatchShipment({
-      shipmentId,
-      carrierName,
-      trackingNumber,
-      trackingUrl,
+      shipmentId: parsed.data.shipmentId,
+      carrierName: parsed.data.carrierName,
+      trackingNumber: parsed.data.trackingNumber,
+      trackingUrl: parsed.data.trackingUrl || undefined,
       actorId: staff.userId,
     });
   } catch (e) {
@@ -402,10 +573,20 @@ export async function dispatchShipmentAction(formData: FormData) {
 export async function deliverShipmentAction(formData: FormData) {
   const staff = await requireStaffPermission("orders:process");
   if (!staff) redirect("/staff/login");
-  const shipmentId = str(formData, "shipmentId");
+
+  const parsed = ShipmentIdInputSchema.safeParse({
+    shipmentId: str(formData, "shipmentId"),
+  });
+  if (!parsed.success) {
+    fail("/staff/fulfilment", "Invalid shipment ID specified");
+  }
+
   try {
     const { FulfilmentService } = await import("@/modules/fulfilment/service");
-    await FulfilmentService.deliverShipment(shipmentId, staff.userId);
+    await FulfilmentService.deliverShipment(
+      parsed.data.shipmentId,
+      staff.userId,
+    );
   } catch (e) {
     fail(
       "/staff/fulfilment",
@@ -418,24 +599,29 @@ export async function deliverShipmentAction(formData: FormData) {
 export async function resolveReturnAction(formData: FormData) {
   const staff = await requireStaffPermission("orders:process");
   if (!staff) redirect("/staff/login");
-  const returnRequestId = str(formData, "returnRequestId");
-  const resolution = str(formData, "resolution") as
-    "refund" | "replacement" | "store_credit" | "closed_no_action";
-  const restockable = str(formData, "restockable") === "true";
-  const staffNotes = str(formData, "staffNotes");
+
+  const parsed = ReturnResolveInputSchema.safeParse({
+    returnRequestId: str(formData, "returnRequestId"),
+    resolution: str(formData, "resolution"),
+    restockable: str(formData, "restockable") === "true",
+    staffNotes: str(formData, "staffNotes"),
+  });
+  if (!parsed.success) {
+    fail("/staff/returns", "Invalid return resolution data");
+  }
 
   try {
     const { ReturnsService } = await import("@/modules/returns/service");
     await ReturnsService.inspectAndResolveReturn({
-      returnRequestId,
+      returnRequestId: parsed.data.returnRequestId,
       staffId: staff.userId,
-      resolution,
-      staffNotes,
+      resolution: parsed.data.resolution,
+      staffNotes: parsed.data.staffNotes,
       inspectedItems: [
         {
-          returnLineId: returnRequestId,
-          restockable,
-          inspectionNotes: staffNotes,
+          returnLineId: parsed.data.returnRequestId,
+          restockable: parsed.data.restockable,
+          inspectionNotes: parsed.data.staffNotes,
         },
       ],
     });

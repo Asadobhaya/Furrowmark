@@ -60,6 +60,14 @@ export class ReturnsService {
       throw new Error("Order not found");
     }
 
+    if (
+      params.customerId &&
+      order.userId &&
+      order.userId !== params.customerId
+    ) {
+      throw new Error("Unauthorized: customer does not own this order");
+    }
+
     if (order.state !== "delivered") {
       throw new Error("Returns can only be requested for delivered orders");
     }
