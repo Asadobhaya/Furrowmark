@@ -4,7 +4,14 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
-  PUBLIC_BASE_URL: z.string().url(),
+  PUBLIC_BASE_URL: z
+    .string()
+    .url()
+    .default(
+      process.env.URL ||
+        process.env.DEPLOY_PRIME_URL ||
+        "https://furrowmark.netlify.app",
+    ),
   DATABASE_URL: z.string().min(1),
   DATABASE_MIGRATOR_URL: z.string().min(1),
   SESSION_SECRET: z.string().min(32),
