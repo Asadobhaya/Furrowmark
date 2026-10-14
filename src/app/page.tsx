@@ -211,12 +211,23 @@ export default async function HomePage() {
                   <span className="text-emerald-800 text-base font-bold">
                     {formatPKR(p.startingPriceMinor)}
                   </span>
+                  <span
+                    className={`block text-[10px] font-medium ${
+                      p.totalAvailableStock > 0
+                        ? "text-emerald-700"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {p.totalAvailableStock > 0
+                      ? `In Stock (${p.totalAvailableStock})`
+                      : "Out of Stock"}
+                  </span>
                 </div>
                 <Link
                   href={`/products/${p.id}`}
                   className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-medium text-xs px-2.5 py-1 rounded transition"
                 >
-                  Details →
+                  Details
                 </Link>
               </div>
             </div>

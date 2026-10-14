@@ -142,12 +142,23 @@ export default async function ProductList({ searchParams }: Props) {
                   <span className="text-emerald-800 text-lg font-bold">
                     {formatPKR(p.startingPriceMinor)}
                   </span>
+                  <span
+                    className={`block text-[11px] font-medium mt-0.5 ${
+                      p.totalAvailableStock > 0
+                        ? "text-emerald-700"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {p.totalAvailableStock > 0
+                      ? `In Stock (${p.totalAvailableStock} packs)`
+                      : "Out of Stock"}
+                  </span>
                 </div>
                 <Link
                   href={`/products/${p.id}`}
                   className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-medium text-xs px-3 py-1.5 rounded-md transition"
                 >
-                  View Details →
+                  View Details
                 </Link>
               </div>
             </li>

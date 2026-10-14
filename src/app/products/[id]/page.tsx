@@ -145,8 +145,16 @@ export default async function ProductDetailPage({ params, searchParams }: Props)
                         <span className="font-bold text-base text-emerald-700">
                           {formatPKR(v.priceMinor)}
                         </span>
-                        <span className="text-gray-500">
-                          In Stock ({v.availableStock ?? 100})
+                        <span
+                          className={`font-medium ${
+                            (v.availableStock ?? 0) > 0
+                              ? "text-emerald-700"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {(v.availableStock ?? 0) > 0
+                            ? `In Stock (${v.availableStock} available)`
+                            : "Out of Stock"}
                         </span>
                       </div>
                     </label>

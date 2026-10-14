@@ -28,31 +28,25 @@ export interface CatalogProductSummary {
   categoryName: string;
   startingPriceMinor: number;
   imageUrl: string;
+  totalAvailableStock: number;
 }
 
 export function getProductImageUrl(slug: string, className: string): string {
   const s = slug.toLowerCase();
-  if (s.includes("cotton")) return "/images/products/seed-cotton.svg";
-  if (s.includes("corn") || s.includes("maize")) return "/images/products/seed-corn.svg";
-  if (s.includes("wheat")) return "/images/products/seed-wheat.svg";
-  if (s.includes("urea")) return "/images/products/fertilizer-urea.svg";
-  if (s.includes("dap")) return "/images/products/fertilizer-dap.svg";
-  if (s.includes("sop") || s.includes("potassium") || s.includes("potash")) return "/images/products/fertilizer-sop.svg";
-  if (s.includes("virtako")) return "/images/products/pesticide-virtako.svg";
-  if (s.includes("coragen")) return "/images/products/pesticide-coragen.svg";
-  if (s.includes("amistar")) return "/images/products/pesticide-amistar.svg";
-  if (s.includes("zinc") || s.includes("nutrivex")) return "/images/products/nutrient-zinc.svg";
-  if (s.includes("booster") || s.includes("npk")) return "/images/products/nutrient-cropbooster.svg";
-  if (s.includes("sprayer") || s.includes("knapsack")) return "/images/products/tool-sprayer.svg";
-
-  switch (className) {
-    case "seed": return "/images/products/seed-cotton.svg";
-    case "fertiliser": return "/images/products/fertilizer-urea.svg";
-    case "pesticide": return "/images/products/pesticide-coragen.svg";
-    case "nutrient": return "/images/products/nutrient-zinc.svg";
-    case "tool": return "/images/products/tool-sprayer.svg";
-    default: return "/images/products/seed-cotton.svg";
-  }
+  if (s.includes("coragen")) return "/images/products/coragen.jpg";
+  if (s.includes("nativo")) return "/images/products/nativo.jpg";
+  if (s.includes("spray") || s.includes("tool") || className === "tool") return "/images/products/sprayer.jpg";
+  if (s.includes("urea")) return "/images/products/urea.jpg";
+  if (s.includes("dap")) return "/images/products/dap.jpg";
+  if (s.includes("sop") || s.includes("potash")) return "/images/products/sop.jpg";
+  if (s.includes("virtako")) return "/images/products/virtako.jpg";
+  if (s.includes("amistar")) return "/images/products/amistar.jpg";
+  if (s.includes("zinc") || s.includes("zorawar")) return "/images/products/zinc.jpg";
+  if (s.includes("npk") || s.includes("foliar") || s.includes("booster")) return "/images/products/npk.jpg";
+  if (s.includes("corn") || s.includes("maize")) return "/images/products/corn.jpg";
+  if (s.includes("cotton")) return "/images/products/cotton.jpg";
+  if (s.includes("wheat") || className === "seed") return "/images/products/wheat.jpg";
+  return "/images/products/coragen.jpg";
 }
 
 export async function searchCatalog(
@@ -88,11 +82,16 @@ export async function searchCatalog(
       brandName: brands.name,
       categoryName: categories.name,
       startingPriceMinor: sql<number>`MIN(${variants.priceMinor})`,
+      totalAvailableStock: sql<number>`COALESCE(SUM(GREATEST(0, ${batches.onHand} - ${batches.reserved} - ${batches.quarantined})), 0)`,
     })
     .from(products)
     .innerJoin(brands, eq(products.brandId, brands.id))
     .innerJoin(categories, eq(products.categoryId, categories.id))
     .innerJoin(variants, eq(products.id, variants.productId))
+    .leftJoin(
+      batches,
+      and(eq(variants.id, batches.variantId), eq(batches.status, "available")),
+    )
     .where(and(...conditions))
     .groupBy(products.id, brands.name, categories.name);
 
@@ -114,6 +113,7 @@ export async function searchCatalog(
     categoryName: r.categoryName,
     startingPriceMinor: Number(r.startingPriceMinor ?? 0),
     imageUrl: getProductImageUrl(r.slug, r.className),
+    totalAvailableStock: Number(r.totalAvailableStock ?? 0),
   }));
 }
 
@@ -204,10 +204,11 @@ export async function getProductById(
         if (variantIds.includes(b.variantId)) {
           const avail = Math.max(0, (b.onHand ?? 0) - (b.reserved ?? 0) - (b.quarantined ?? 0));
           const expStr = b.expiresOn ? new Date(b.expiresOn).toISOString().split("T")[0] : "";
+          const existing = batchesByVariant.get(b.variantId);
           batchesByVariant.set(b.variantId, {
             lotNumber: b.lotNumber,
             expiresOn: expStr,
-            availableStock: avail,
+            availableStock: (existing?.availableStock ?? 0) + avail,
           });
         }
       }
@@ -224,7 +225,7 @@ export async function getProductById(
       return {
         ...v,
         priceMinor: Number(v.priceMinor),
-        availableStock: batchInfo?.availableStock ?? 100,
+        availableStock: batchInfo ? batchInfo.availableStock : 0,
         lotNumber: batchInfo?.lotNumber ?? `LOT-${v.sku}`,
         expiresOn: batchInfo?.expiresOn ?? "2028-10-31",
       };

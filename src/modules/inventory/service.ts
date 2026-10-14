@@ -60,21 +60,21 @@ export async function allocateStockFefo(
 
       const allocateQty = Math.min(remainingNeeded, unreserved);
 
-      // Reserve stock on the batch record
+      // Deduct stock from the batch on-hand inventory
       await tx
         .update(batches)
         .set({
-          reserved: sql`${batches.reserved} + ${allocateQty}`,
+          onHand: sql`${batches.onHand} - ${allocateQty}`,
         })
         .where(eq(batches.id, batch.id));
 
       // Append immutable record to stock ledger
       await tx.insert(stockLedger).values({
         batchId: batch.id,
-        movementType: "reservation",
+        movementType: "shipment",
         quantity: allocateQty,
         actorId: req.actorId,
-        reason: "Order checkout reservation",
+        reason: "Customer purchase order deduction",
         referenceId: req.referenceId,
       });
 
@@ -172,6 +172,7 @@ export async function releaseStockReservation(
     await tx
       .update(batches)
       .set({
+        onHand: sql`${batches.onHand} + ${quantity}`,
         reserved: sql`GREATEST(0, ${batches.reserved} - ${quantity})`,
       })
       .where(eq(batches.id, batchId));
