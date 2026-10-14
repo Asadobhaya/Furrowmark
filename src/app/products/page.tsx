@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { searchProducts } from "@/modules/catalog/service";
 import { formatPKR } from "../format";
+import { ProductImage } from "../components/ProductImage";
 
 type Props = {
   searchParams: Promise<{ q?: string }>;
@@ -37,11 +38,7 @@ export default async function ProductList({ searchParams }: Props) {
           <li key={p.id} className="border border-gray-200 rounded-lg p-4 flex flex-col h-full bg-white shadow-sm hover:shadow-md transition">
             <Link href={`/products/${p.id}`} className="block mb-3">
               <div className="bg-gray-50 border border-gray-100 rounded-md h-48 flex items-center justify-center p-3 mb-3 overflow-hidden">
-                <img
-                  src={p.imageUrl}
-                  alt={p.name}
-                  className="max-h-full max-w-full object-contain hover:scale-105 transition duration-200"
-                />
+                <ProductImage slug={p.slug} className={p.className} containerClass="h-44 w-full" />
               </div>
               <h2 className="text-base font-semibold text-gray-900 mb-1 hover:text-green-700 line-clamp-2" title={p.name}>
                 {p.name}

@@ -11,6 +11,7 @@ import {
   staffLogoutAction,
 } from "../../actions";
 import { formatPKR } from "../../format";
+import { ProductImage } from "../../components/ProductImage";
 
 type Props = { searchParams: Promise<{ error?: string }> };
 
@@ -242,12 +243,17 @@ export default async function StaffProductsPage({ searchParams }: Props) {
                   return (
                     <tr key={p.id} className="hover:bg-gray-50">
                       <td className="p-3 font-medium text-gray-900">
-                        {p.name}
-                        {firstVariant && (
-                          <span className="block text-xs text-gray-500">
-                            SKU: {firstVariant.sku}
-                          </span>
-                        )}
+                        <div className="flex items-center gap-3">
+                          <ProductImage slug={p.slug} className={p.className} containerClass="h-10 w-10 flex-shrink-0" />
+                          <div>
+                            <span className="font-semibold">{p.name}</span>
+                            {firstVariant && (
+                              <span className="block text-xs text-gray-500">
+                                SKU: {firstVariant.sku}
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </td>
                       <td className="p-3 text-gray-700">{p.categoryName}</td>
                       <td className="p-3 text-gray-700">{p.brandName}</td>

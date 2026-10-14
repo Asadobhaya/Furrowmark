@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getProductById } from "@/modules/catalog/service";
 import { addToCartAction } from "../../actions";
 import { formatPKR } from "../../format";
+import { ProductImage } from "../../components/ProductImage";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -27,11 +28,7 @@ export default async function ProductDetail({ params, searchParams }: Props) {
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div className="bg-gray-50 border border-gray-200 rounded-xl h-80 flex items-center justify-center p-6 shadow-sm overflow-hidden">
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            className="max-h-full max-w-full object-contain"
-          />
+          <ProductImage slug={product.slug} className={product.className} containerClass="h-72 w-full" />
         </div>
 
         <div className="flex flex-col">
