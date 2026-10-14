@@ -225,7 +225,7 @@ export function ProductImage({ slug = "", className = "", containerClass = "h-44
   }
 
   // 10. Zinc Micronutrient
-  if (s.includes("zinc") || s.includes("nutrivex")) {
+  if (s.includes("zinc") || s.includes("zorawar") || s.includes("nutrivex")) {
     return (
       <div className={`flex items-center justify-center ${containerClass}`}>
         <svg viewBox="0 0 300 300" className="max-h-full max-w-full drop-shadow-sm">
@@ -234,11 +234,11 @@ export function ProductImage({ slug = "", className = "", containerClass = "h-44
           <rect x="65" y="55" width="170" height="15" fill="#0891B2" rx="3"/>
           <line x1="65" y1="62" x2="235" y2="62" stroke="#67E8F9" strokeWidth="2" strokeDasharray="6,4"/>
           <rect x="80" y="85" width="140" height="36" fill="#0E7490" rx="4"/>
-          <text x="150" y="108" fill="#FFFFFF" fontFamily="sans-serif" fontSize="13" fontWeight="bold" textAnchor="middle">ICI PAKISTAN</text>
+          <text x="150" y="108" fill="#FFFFFF" fontFamily="sans-serif" fontSize="12" fontWeight="bold" textAnchor="middle">ENGRO FERTILIZERS</text>
           <circle cx="150" cy="160" r="30" fill="#CFFAFE" stroke="#0891B2" strokeWidth="2.5"/>
           <text x="150" y="162" fill="#155E75" fontFamily="sans-serif" fontSize="18" fontWeight="bold" textAnchor="middle">Zn</text>
           <text x="150" y="178" fill="#0891B2" fontFamily="sans-serif" fontSize="12" fontWeight="bold" textAnchor="middle">33%</text>
-          <text x="150" y="215" fill="#164E63" fontFamily="sans-serif" fontSize="14" fontWeight="bold" textAnchor="middle">NUTRIVEX ZINC</text>
+          <text x="150" y="215" fill="#164E63" fontFamily="sans-serif" fontSize="14" fontWeight="bold" textAnchor="middle">ZORAWAR ZINC</text>
           <text x="150" y="230" fill="#0891B2" fontFamily="sans-serif" fontSize="10" textAnchor="middle">CHELATED MICRONUTRIENT</text>
           <rect x="110" y="238" width="80" height="16" fill="#CFFAFE" rx="8"/>
           <text x="150" y="250" fill="#0891B2" fontFamily="sans-serif" fontSize="9" fontWeight="bold" textAnchor="middle">5 KG NET</text>
@@ -247,24 +247,24 @@ export function ProductImage({ slug = "", className = "", containerClass = "h-44
     );
   }
 
-  // 11. Crop Booster Foliar
-  if (s.includes("booster") || s.includes("npk") || (c === "nutrient")) {
+  // 11. Bayer Nativo 75 WG Systemic Fungicide
+  if (s.includes("nativo") || s.includes("booster") || s.includes("npk") || (c === "nutrient")) {
     return (
       <div className={`flex items-center justify-center ${containerClass}`}>
         <svg viewBox="0 0 300 300" className="max-h-full max-w-full drop-shadow-sm">
-          <rect width="300" height="300" fill="#F0FDF4" rx="16"/>
-          <rect x="80" y="65" width="140" height="190" fill="#FFFFFF" stroke="#059669" strokeWidth="4" rx="6"/>
-          <polygon points="80,65 105,45 225,45 220,65" fill="#D1FAE5" stroke="#059669" strokeWidth="2"/>
-          <polygon points="220,65 225,45 240,65" fill="#A7F3D0" stroke="#059669" strokeWidth="2"/>
-          <rect x="85" y="80" width="130" height="34" fill="#065F46" rx="3"/>
+          <rect width="300" height="300" fill="#EFF6FF" rx="16"/>
+          <rect x="80" y="65" width="140" height="190" fill="#FFFFFF" stroke="#1D4ED8" strokeWidth="4" rx="6"/>
+          <polygon points="80,65 105,45 225,45 220,65" fill="#DBEAFE" stroke="#1D4ED8" strokeWidth="2"/>
+          <polygon points="220,65 225,45 240,65" fill="#BFDBFE" stroke="#1D4ED8" strokeWidth="2"/>
+          <rect x="85" y="80" width="130" height="34" fill="#1E40AF" rx="3"/>
           <text x="150" y="102" fill="#FFFFFF" fontFamily="sans-serif" fontSize="11" fontWeight="bold" textAnchor="middle">BAYER CROP SCIENCE</text>
-          <circle cx="150" cy="155" r="30" fill="#ECFDF5" stroke="#10B981" strokeWidth="2"/>
-          <text x="150" y="152" fill="#047857" fontFamily="sans-serif" fontSize="10" fontWeight="bold" textAnchor="middle">SOLUBLE FOLIAR</text>
-          <text x="150" y="170" fill="#064E3B" fontFamily="sans-serif" fontSize="14" fontWeight="bold" textAnchor="middle">20-20-20</text>
-          <text x="150" y="210" fill="#064E3B" fontFamily="sans-serif" fontSize="13" fontWeight="bold" textAnchor="middle">CROP BOOSTER</text>
-          <text x="150" y="225" fill="#059669" fontFamily="sans-serif" fontSize="9" textAnchor="middle">+ CHELATED TE</text>
-          <rect x="110" y="232" width="80" height="16" fill="#D1FAE5" rx="8"/>
-          <text x="150" y="244" fill="#047857" fontFamily="sans-serif" fontSize="9" fontWeight="bold" textAnchor="middle">1 KG NET</text>
+          <circle cx="150" cy="155" r="30" fill="#EFF6FF" stroke="#2563EB" strokeWidth="2"/>
+          <text x="150" y="152" fill="#1E40AF" fontFamily="sans-serif" fontSize="10" fontWeight="bold" textAnchor="middle">FUNGICIDE</text>
+          <text x="150" y="170" fill="#1E3A8A" fontFamily="sans-serif" fontSize="13" fontWeight="bold" textAnchor="middle">75 WG</text>
+          <text x="150" y="210" fill="#1E3A8A" fontFamily="sans-serif" fontSize="14" fontWeight="bold" textAnchor="middle">NATIVO</text>
+          <text x="150" y="225" fill="#2563EB" fontFamily="sans-serif" fontSize="9" textAnchor="middle">SYSTEMIC PROTECTION</text>
+          <rect x="110" y="232" width="80" height="16" fill="#DBEAFE" rx="8"/>
+          <text x="150" y="244" fill="#1D4ED8" fontFamily="sans-serif" fontSize="9" fontWeight="bold" textAnchor="middle">65 G NET</text>
         </svg>
       </div>
     );

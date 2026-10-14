@@ -7,6 +7,12 @@ import { RECEIVING_ACCOUNTS } from "@/modules/payments/accounts";
 import { getCustomerSession } from "@/modules/web/session";
 import { formatPKR } from "../../format";
 
+export const metadata = {
+  title: "Order Confirmation | Furrowmark",
+  description:
+    "View your order status, summary, and secure advance payment receiving bank details.",
+};
+
 const STATE_LABELS: Record<string, string> = {
   pending_payment: "Waiting for payment verification",
   awaiting_confirmation: "Waiting for confirmation",

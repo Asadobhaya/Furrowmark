@@ -254,10 +254,10 @@ export class ChatbotTools {
     return {
       policy: "Accepted Payment Methods",
       methods: [
-        "Advance Payment directly to company accounts:",
-        "  - Meezan Bank: Account 03130115156301 (Title: Muhammad Asad)",
-        "  - Easypaisa: Account 03004634494 (Title: Muhammad Asad)",
-        "Cash on Delivery (COD) payable upon receipt to courier driver.",
+        "1. Verified Advance Bank Transfer (IBFT via 1Link): Receiving bank details are displayed securely on your order confirmation screen upon checkout.",
+        "2. Easypaisa Mobile Wallet: Instructions provided on your post-checkout order summary.",
+        "3. Cash on Delivery (COD): Available across Pakistan for eligible orders up to Rs. 25,000 (under 10 kg).",
+        "Official bank receiving coordinates are presented securely after order placement to protect buyers from fraud.",
       ],
     };
   }

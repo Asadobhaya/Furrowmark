@@ -1,89 +1,125 @@
 import Link from "next/link";
-import { RECEIVING_ACCOUNTS } from "@/modules/payments/accounts";
 
 export const metadata = {
-  title: "Payment Methods - Furrowmark",
-  description: "Official payment methods, bank account details, and verification policy for Furrowmark.",
+  title: "Payment Methods & Order Settlement | Furrowmark",
+  description:
+    "Official payment settlement guidelines, verified IBFT bank transfers, Easypaisa, and Cash on Delivery (COD) for Furrowmark orders in Pakistan.",
 };
 
 export default function PaymentMethodsPage() {
   return (
-    <main className="max-w-4xl mx-auto p-6 space-y-8">
+    <main className="max-w-4xl mx-auto p-4 md:p-8 space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Official Payment Accounts & Instructions
+          Payment Methods & Order Settlement
         </h1>
-        <p className="text-gray-600">
-          Furrowmark accepts Direct Advance Payments via Bank Transfer and Easypaisa, as well as Cash on Delivery (COD) for eligible deliveries across Pakistan.
+        <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+          Furrowmark provides safe, accountable agricultural order settlement. We accept Verified Advance Bank Transfer (IBFT via 1Link), Easypaisa mobile wallet, and Cash on Delivery (COD) for eligible deliveries across Pakistan.
         </p>
       </div>
 
-      {/* Advance Payment Accounts */}
-      <section className="border rounded-xl p-6 bg-emerald-50 border-emerald-200 space-y-4">
+      {/* Payment Security Notice */}
+      <section className="border border-emerald-300 rounded-2xl p-6 bg-emerald-50/70 space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-emerald-950">
-            1. Direct Advance Payment Accounts
+          <h2 className="text-lg font-bold text-emerald-950">
+            Payment Privacy & Fraud Protection Protocol
           </h2>
           <span className="text-xs font-semibold bg-emerald-200 text-emerald-900 px-3 py-1 rounded-full">
-            Recommended
+            Secure Settlement
           </span>
         </div>
-        <p className="text-sm text-emerald-900">
-          Transfer the exact total amount shown at checkout to either of the following official accounts registered in the name of store owner Muhammad Asad:
+        <p className="text-sm text-emerald-900 leading-relaxed">
+          To protect buyers from payment interception, fraudulent impersonation, and phishing scams, official receiving bank transfer coordinates are issued directly on the secure, authenticated order confirmation screen after your order is submitted. Each order is tied to an immutable Public Order Reference (e.g. FM-2026-XXXX-XXXX).
         </p>
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-          {RECEIVING_ACCOUNTS.map((acc) => (
-            <div
-              key={acc.id}
-              className="bg-white border border-emerald-300 rounded-lg p-5 shadow-sm space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-lg text-gray-900">{acc.label}</span>
-                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-mono">
-                  Official Account
-                </span>
-              </div>
-              <div className="space-y-1 text-sm pt-2 border-t">
-                <p className="text-gray-500 text-xs">Account Title:</p>
-                <p className="font-semibold text-gray-800">{acc.accountTitle}</p>
-                <p className="text-gray-500 text-xs mt-2">Account Number:</p>
-                <p className="font-mono text-base font-bold text-emerald-700 tracking-wider">
-                  {acc.accountNumber}
-                </p>
-              </div>
-            </div>
-          ))}
+      {/* Accepted Methods */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Method 1: Bank Transfer */}
+        <div className="border border-gray-200 rounded-xl p-5 bg-white shadow-sm space-y-3">
+          <div className="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-lg">
+            1
+          </div>
+          <h3 className="font-bold text-gray-900 text-base">Direct Bank Transfer (IBFT)</h3>
+          <p className="text-xs text-gray-600 leading-relaxed">
+            Transfer directly from any Pakistani bank (Meezan, HBL, UBL, Bank Alfalah, MCB, etc.) via mobile app or online portal.
+          </p>
+          <ul className="text-xs text-gray-700 space-y-1 list-disc pl-4">
+            <li>Zero payment processing fees.</li>
+            <li>Same-day manual statement reconciliation.</li>
+            <li>Receiving coordinates shown on order confirmation.</li>
+          </ul>
         </div>
 
-        <div className="bg-white/80 rounded-lg p-4 text-xs text-gray-700 border border-emerald-200 space-y-1 mt-4">
-          <p className="font-semibold text-gray-900">How to confirm your advance payment:</p>
-          <p>1. Open your banking app (Meezan, HBL, UBL, etc.) or Easypaisa app.</p>
-          <p>2. Send the exact order total to the account above.</p>
-          <p>3. Note down the Transaction Reference ID (TID / Ref No) provided by your bank.</p>
-          <p>4. Enter your Transaction Reference ID in the checkout screen and click Place Order.</p>
-          <p>5. Our staff verifies the bank statement before dispatching your order.</p>
+        {/* Method 2: Easypaisa */}
+        <div className="border border-gray-200 rounded-xl p-5 bg-white shadow-sm space-y-3">
+          <div className="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-lg">
+            2
+          </div>
+          <h3 className="font-bold text-gray-900 text-base">Easypaisa Mobile Wallet</h3>
+          <p className="text-xs text-gray-600 leading-relaxed">
+            Instant transfer using your Easypaisa mobile account or through any designated Easypaisa retail agent across Pakistan.
+          </p>
+          <ul className="text-xs text-gray-700 space-y-1 list-disc pl-4">
+            <li>Fast mobile wallet confirmation.</li>
+            <li>Submit your Transaction ID during checkout.</li>
+            <li>Account details provided upon order creation.</li>
+          </ul>
+        </div>
+
+        {/* Method 3: COD */}
+        <div className="border border-gray-200 rounded-xl p-5 bg-white shadow-sm space-y-3">
+          <div className="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-lg">
+            3
+          </div>
+          <h3 className="font-bold text-gray-900 text-base">Cash on Delivery (COD)</h3>
+          <p className="text-xs text-gray-600 leading-relaxed">
+            Pay exact cash directly to the courier rider upon delivery at your farm or residence.
+          </p>
+          <ul className="text-xs text-gray-700 space-y-1 list-disc pl-4">
+            <li>Available up to Rs. 25,000 per consignment.</li>
+            <li>Max parcel weight 10 kg for courier handling.</li>
+            <li>No additional COD handling surcharge.</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Step by Step Guide */}
+      <section className="border border-gray-200 rounded-2xl p-6 bg-gray-50/50 space-y-4">
+        <h2 className="text-xl font-bold text-gray-900">
+          How to Place and Confirm an Advance Payment Order
+        </h2>
+        <div className="space-y-3 text-sm text-gray-700 leading-relaxed">
+          <p>
+            <strong>Step 1:</strong> Add your desired hybrid seeds, fertilizers, or agrochemicals to the cart and proceed to checkout.
+          </p>
+          <p>
+            <strong>Step 2:</strong> Select <em>Advance payment (Bank Transfer / Easypaisa)</em> and complete your shipping address.
+          </p>
+          <p>
+            <strong>Step 3:</strong> On the order summary screen, view the official receiving bank account coordinates and transfer the exact total quoting your Order Reference.
+          </p>
+          <p>
+            <strong>Step 4:</strong> Enter your bank Transaction ID (TID) or share your receipt with our Multan dispatch desk. Our staff verifies the bank statement before dispatching your lot-tracked consignment.
+          </p>
         </div>
       </section>
 
-      {/* Cash on Delivery */}
-      <section className="border rounded-xl p-6 bg-white shadow-sm space-y-3">
-        <h2 className="text-xl font-bold text-gray-900">
-          2. Cash on Delivery (COD)
+      {/* Bulk Consignments */}
+      <section className="border border-gray-200 rounded-2xl p-6 bg-white space-y-3">
+        <h2 className="text-lg font-bold text-gray-900">
+          Commercial Orders & Goods Transport (Biltee)
         </h2>
         <p className="text-sm text-gray-600 leading-relaxed">
-          Cash on Delivery is available for non-restricted agricultural goods and standard parcel sizes throughout Pakistan. Payment is made in cash directly to the courier rider upon delivery at your farm or residence.
-        </p>
-        <p className="text-xs text-gray-500">
-          Note: Regulated bulk chemical drums or commercial bulk seed consignments exceeding courier weight limits may require advance bank transfer.
+          For commercial orders exceeding 100 kg (such as multiple 50 kg bags of Sona Urea, Engro DAP, or bulk seed consignments), orders are dispatched via licensed Goods Transport (Biltee) freight. These commercial consignments require advance bank settlement prior to truck loading.
         </p>
       </section>
 
-      <div className="pt-4 border-t flex items-center justify-between">
-        <Link href="/products" className="text-sm font-medium text-green-700 hover:underline">
-          ← Return to Store Products
+      <div className="pt-4 border-t flex items-center justify-between text-sm">
+        <Link href="/products" className="text-emerald-700 hover:underline font-medium">
+          ← Return to Products
         </Link>
-        <Link href="/cart" className="text-sm font-medium text-green-700 hover:underline">
+        <Link href="/cart" className="text-emerald-700 hover:underline font-medium">
           View Shopping Cart →
         </Link>
       </div>

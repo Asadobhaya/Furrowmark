@@ -3,6 +3,12 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { loginAction } from "../actions";
 
+export const metadata = {
+  title: "Sign in | Furrowmark",
+  description:
+    "Sign in to your Furrowmark customer account to manage agricultural orders and track consignments.",
+};
+
 type Props = { searchParams: Promise<{ error?: string; next?: string }> };
 
 export default async function LoginPage({ searchParams }: Props) {

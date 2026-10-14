@@ -223,9 +223,9 @@ BEGIN
   VALUES (v_var_id, 'LOT-AMI-2026-I1', now(), now() + interval '2 years', 120, 120, 0, 0, 'available')
   ON CONFLICT (variant_id, lot_number) DO UPDATE SET on_hand = 120, status = 'available';
 
-  -- Product 10: Nutrivex Zinc 33% Chelated Micronutrient
+  -- Product 10: Engro Zorawar Zinc 33%
   INSERT INTO products (category_id, brand_id, name, slug, class, status, description, country_of_origin, authored_by, published_by, published_at)
-  VALUES (v_cat_nutr, v_br_ici, 'Nutrivex Zinc 33% Chelated Micronutrient', 'nutrivex-zinc-33-chelated', 'nutrient', 'published',
+  VALUES (v_cat_nutr, v_br_engro, 'Engro Zorawar Zinc 33% Chelated Micronutrient', 'engro-zorawar-zinc-33', 'nutrient', 'published',
     'High-bioavailability agricultural zinc preventing khaira disease in paddy rice and leaf chlorosis in citrus and cotton.',
     'Pakistan', v_user_id, v_user_id, now())
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
@@ -238,19 +238,19 @@ BEGIN
   VALUES (v_var_id, 'LOT-ZNC-2026-J1', now(), now() + interval '2 years', 160, 160, 0, 0, 'available')
   ON CONFLICT (variant_id, lot_number) DO UPDATE SET on_hand = 160, status = 'available';
 
-  -- Product 11: Crop Booster NPK 20-20-20 + TE
+  -- Product 11: Bayer Nativo 75 WG Systemic Fungicide
   INSERT INTO products (category_id, brand_id, name, slug, class, status, description, country_of_origin, authored_by, published_by, published_at)
-  VALUES (v_cat_nutr, v_br_bayer, 'Crop Booster NPK 20-20-20 + TE Water Soluble Foliar', 'crop-booster-npk-20-20-20', 'nutrient', 'published',
-    '100 percent water-soluble complete foliar plant food with EDTA chelated trace elements for emergency nutrient supplementation during stress.',
+  VALUES (v_cat_pest, v_br_bayer, 'Bayer Nativo 75 WG Systemic Fungicide', 'bayer-nativo-75-wg', 'pesticide', 'published',
+    'Broad spectrum systemic fungicide combining tebuconazole and trifloxystrobin for rice blast, wheat rust, and fruit powdery mildew.',
     'Pakistan', v_user_id, v_user_id, now())
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'NUTR-NPK20-1KG', '1 kg Pack', 1, 'kg', 160000, 'PKR', true)
+  VALUES (v_prod_id, 'PEST-NATIVO-65G', '65 g Pack', 65, 'g', 240000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
-  VALUES (v_var_id, 'LOT-NPK-2026-K1', now(), now() + interval '2 years', 220, 220, 0, 0, 'available')
+  VALUES (v_var_id, 'LOT-NAT-2026-K1', now(), now() + interval '2 years', 220, 220, 0, 0, 'available')
   ON CONFLICT (variant_id, lot_number) DO UPDATE SET on_hand = 220, status = 'available';
 
   -- Product 12: Battery Powered 16L Knapsack Sprayer

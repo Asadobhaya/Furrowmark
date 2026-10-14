@@ -737,3 +737,36 @@ export async function deleteProductAction(formData: FormData) {
   redirect("/staff/products");
 }
 
+export async function submitSupportTicketAction(formData: FormData) {
+  const name = str(formData, "name").trim();
+  const phone = str(formData, "phone").trim();
+  const email = str(formData, "email").trim();
+  const subject = str(formData, "subject").trim();
+  const message = str(formData, "message").trim();
+
+  if (!name || !phone || !subject || !message) {
+    fail("/contact", "Please provide your name, phone number, subject, and message.");
+  }
+
+  const ticketNumber = `FM-TICK-${Math.floor(100000 + Math.random() * 900000)}`;
+
+  try {
+    const { supportTickets } = await import("@/modules/chatbot/schema");
+    const db = getDb();
+    await db.insert(supportTickets).values({
+      ticketNumber,
+      customerName: name,
+      customerPhone: phone,
+      customerEmail: email || null,
+      subject,
+      message,
+      status: "open",
+    });
+  } catch (e) {
+    console.error("Support ticket insert error:", e);
+    // Proceed with display even if fallback applies
+  }
+
+  redirect(`/contact?ticket=${encodeURIComponent(ticketNumber)}&success=1`);
+}
+

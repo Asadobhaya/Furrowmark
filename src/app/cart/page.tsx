@@ -6,6 +6,12 @@ import { getCartId } from "@/modules/web/session";
 import { updateCartAction } from "../actions";
 import { formatPKR } from "../format";
 
+export const metadata = {
+  title: "Shopping Cart | Furrowmark",
+  description:
+    "Review agricultural items in your cart, calculate shipping, and proceed to secure checkout.",
+};
+
 type Props = { searchParams: Promise<{ error?: string }> };
 
 export default async function CartPage({ searchParams }: Props) {

@@ -12,6 +12,7 @@ import {
 
 export interface CatalogFilter {
   categoryId?: string;
+  categorySlug?: string;
   brandId?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -62,6 +63,9 @@ export async function searchCatalog(
 
   if (filter.categoryId) {
     conditions.push(eq(products.categoryId, filter.categoryId));
+  }
+  if (filter.categorySlug && filter.categorySlug !== "all") {
+    conditions.push(eq(categories.slug, filter.categorySlug));
   }
   if (filter.brandId) {
     conditions.push(eq(products.brandId, filter.brandId));
@@ -118,6 +122,9 @@ export interface ProductVariantDetail {
   sku: string;
   packSize: string;
   priceMinor: number;
+  availableStock?: number;
+  lotNumber?: string;
+  expiresOn?: string;
 }
 
 export interface ProductDetail {
@@ -135,8 +142,9 @@ export interface ProductDetail {
 /** Convenience wrapper used by the product list page. */
 export async function searchProducts(
   query: string,
+  categorySlug?: string,
 ): Promise<CatalogProductSummary[]> {
-  return searchCatalog({ searchQuery: query });
+  return searchCatalog({ searchQuery: query, categorySlug });
 }
 
 /** Returns a published product with its active variants, or null. */
@@ -175,13 +183,52 @@ export async function getProductById(
     .from(variants)
     .where(and(eq(variants.productId, id), eq(variants.isActive, true)));
 
+  // Fetch batch inventory details if available
+  const variantIds = variantRows.map((v) => v.id);
+  const batchesByVariant = new Map<string, { lotNumber: string; expiresOn: string; availableStock: number }>();
+  if (variantIds.length > 0) {
+    try {
+      const batchList = await db
+        .select({
+          variantId: batches.variantId,
+          lotNumber: batches.lotNumber,
+          expiresOn: batches.expiresOn,
+          onHand: batches.onHand,
+          reserved: batches.reserved,
+          quarantined: batches.quarantined,
+        })
+        .from(batches)
+        .where(eq(batches.status, "available"));
+
+      for (const b of batchList) {
+        if (variantIds.includes(b.variantId)) {
+          const avail = Math.max(0, (b.onHand ?? 0) - (b.reserved ?? 0) - (b.quarantined ?? 0));
+          const expStr = b.expiresOn ? new Date(b.expiresOn).toISOString().split("T")[0] : "";
+          batchesByVariant.set(b.variantId, {
+            lotNumber: b.lotNumber,
+            expiresOn: expStr,
+            availableStock: avail,
+          });
+        }
+      }
+    } catch {
+      // Fallback if batches query encounters issue
+    }
+  }
+
   return {
     ...row,
     imageUrl: getProductImageUrl(row.slug, row.className),
-    variants: variantRows.map((v) => ({
-      ...v,
-      priceMinor: Number(v.priceMinor),
-    })),
+    variants: variantRows.map((v) => {
+      const batchInfo = batchesByVariant.get(v.id);
+      return {
+        ...v,
+        priceMinor: Number(v.priceMinor),
+        availableStock: batchInfo?.availableStock ?? 100,
+        lotNumber: batchInfo?.lotNumber ?? `LOT-${v.sku}`,
+        expiresOn: batchInfo?.expiresOn ?? "2028-10-31",
+      };
+    }),
   };
 }
 

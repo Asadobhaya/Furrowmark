@@ -126,6 +126,24 @@ export class ChatbotService {
     const lower = cleanUserText.toLowerCase();
 
     if (
+      lower.includes("mix") ||
+      lower.includes("tank mix") ||
+      lower.includes("compatibility") ||
+      lower.includes("mixing")
+    ) {
+      botReply =
+        "Tank-Mixing Safety Directive:\nAlways consult the official manufacturer label before tank-mixing two agricultural chemicals. Perform a jar test (mix small proportional amounts in a clean glass jar) to verify physical stability. Never mix organophosphates with alkaline sprays or copper fungicides. Observe the stricter pre-harvest interval (PHI) between products. If unsure, file an advisory ticket at /contact or consult our agronomist.";
+      toolExecuted = "agronomic_safety_check";
+    } else if (
+      lower.includes("dosage") ||
+      lower.includes("dose") ||
+      lower.includes("rate") ||
+      lower.includes("per acre")
+    ) {
+      botReply =
+        "Agronomic Dosage Directive:\nDosage must strictly follow Department of Plant Protection (DPP) label specifications:\n- Coragen 20 SC: 50 mL in 100-120 L water per acre for bollworms/armyworms.\n- Virtako 0.6% GR: 4 kg per acre broadcast in standing paddy water.\n- Bayer Nativo 75 WG: 65 g in 100 L water per acre for blast/rust.\n- Engro DAP: 50-75 kg/acre basal application.\n- Sona Urea: 50-100 kg/acre split vegetative dressing.\nNever exceed registered rates and always wear protective gloves and mask.";
+      toolExecuted = "agronomic_dosage_lookup";
+    } else if (
       lower.includes("policy") ||
       lower.includes("return") ||
       lower.includes("refund")

@@ -6,6 +6,12 @@ import { RECEIVING_ACCOUNTS } from "@/modules/payments/accounts";
 import { getCustomerSession } from "@/modules/web/session";
 import { submitOrderAction } from "../actions";
 
+export const metadata = {
+  title: "Secure Checkout | Furrowmark",
+  description:
+    "Complete your shipping address and select your payment method (Advance Bank Transfer or Cash on Delivery).",
+};
+
 type Props = { searchParams: Promise<{ error?: string }> };
 
 const inputClass =
