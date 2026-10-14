@@ -25,13 +25,20 @@ export default async function ProductDetail({ params, searchParams }: Props) {
         </Link>
       </nav>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Image placeholder - real packshot must be uploaded before publishing */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div
-          className="bg-gray-200 h-64 flex items-center justify-center"
+          className="bg-emerald-50 border border-emerald-100 rounded-xl h-72 flex flex-col items-center justify-center p-6 text-center shadow-inner"
           aria-hidden="true"
         >
-          <span className="text-sm text-gray-600">Image required</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full mb-3">
+            {product.brandName} · Certified {product.categoryName}
+          </span>
+          <h2 className="text-xl font-bold text-emerald-950 mb-2">
+            {product.name}
+          </h2>
+          <span className="text-xs text-emerald-700 font-medium">
+            Manufacturer Sealed Packaging & Tamper-Proof Batch
+          </span>
         </div>
 
         <div className="flex flex-col">

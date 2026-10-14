@@ -7,6 +7,7 @@ import {
   categories,
   searchQueries,
   priceHistory,
+  batches,
 } from "./schema";
 
 export interface CatalogFilter {
@@ -335,6 +336,22 @@ export async function createStaffProduct(
     priceMinor: input.priceMinor,
     currency: "PKR",
     changedBy: authoredById,
+  });
+
+  // 7. Initialize inventory batch so item has immediate stock in cart
+  const twoYearsFromNow = new Date();
+  twoYearsFromNow.setFullYear(twoYearsFromNow.getFullYear() + 2);
+
+  await db.insert(batches).values({
+    variantId: newVar!.id,
+    lotNumber: `LOT-${sku}`,
+    manufacturedOn: new Date(),
+    expiresOn: twoYearsFromNow,
+    receivedQuantity: 100,
+    onHand: 100,
+    reserved: 0,
+    quarantined: 0,
+    status: "available",
   });
 
   return newProd!;

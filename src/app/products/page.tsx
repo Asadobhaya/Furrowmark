@@ -32,23 +32,33 @@ export default async function ProductList({ searchParams }: Props) {
         </button>
       </form>
       {products.length === 0 && <p>No products found.</p>}
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((p) => (
-          <li key={p.id} className="border rounded p-4 flex flex-col h-full">
-            <Link href={`/products/${p.id}`}>
-              {/* Image placeholder - real packshot must be uploaded before publishing */}
+          <li key={p.id} className="border border-gray-200 rounded-lg p-4 flex flex-col h-full bg-white shadow-sm hover:shadow-md transition">
+            <Link href={`/products/${p.id}`} className="block mb-3">
               <div
-                className="bg-gray-200 h-40 flex items-center justify-center mb-2"
+                className="bg-emerald-50 border border-emerald-100 rounded-md h-44 flex flex-col items-center justify-center p-4 mb-3 text-center"
                 aria-hidden="true"
               >
-                <span className="text-sm text-gray-600">Image required</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full mb-2">
+                  {p.className}
+                </span>
+                <p className="text-sm font-semibold text-emerald-950 line-clamp-2">
+                  {p.name}
+                </p>
+                <span className="text-xs text-emerald-700 mt-2 font-medium">
+                  {p.brandName}
+                </span>
               </div>
-              <h2 className="text-lg font-medium mb-1" title={p.name}>
+              <h2 className="text-base font-semibold text-gray-900 mb-1 hover:text-green-700 line-clamp-2" title={p.name}>
                 {p.name}
               </h2>
             </Link>
-            <p className="text-sm text-gray-600">{p.brandName}</p>
-            <p className="text-green-800 font-semibold mt-auto">
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+              <span>{p.brandName}</span>
+              <span className="bg-gray-100 px-2 py-0.5 rounded">{p.categoryName}</span>
+            </div>
+            <p className="text-green-800 text-lg font-bold mt-auto pt-2 border-t border-gray-100">
               From {formatPKR(p.startingPriceMinor)}
             </p>
           </li>

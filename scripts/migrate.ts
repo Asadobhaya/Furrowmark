@@ -799,6 +799,31 @@ async function migrate() {
       $$;
     `);
 
+    // Seed realistic Pakistani agricultural catalog if empty
+    const countCheck = await client.query(
+      "SELECT COUNT(*) AS c FROM products WHERE status = 'published'",
+    );
+    if (parseInt(countCheck.rows[0]?.c ?? "0", 10) === 0) {
+      console.log("Empty catalog detected. Seeding sample Pakistani agricultural products...");
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const candidatePaths = [
+        path.join(process.cwd(), "scripts", "seed-catalog.sql"),
+        path.join(__dirname, "seed-catalog.sql"),
+      ];
+      let seedSql = "";
+      for (const p of candidatePaths) {
+        if (fs.existsSync(p)) {
+          seedSql = fs.readFileSync(p, "utf8");
+          break;
+        }
+      }
+      if (seedSql) {
+        await client.query(seedSql);
+        console.log("Sample catalog successfully seeded.");
+      }
+    }
+
     await client.query("COMMIT");
     console.log("Database migrations completed successfully.");
   } catch (error) {
