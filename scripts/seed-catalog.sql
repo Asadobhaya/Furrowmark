@@ -96,7 +96,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'SEED-COT-BS15', '10 kg Bag', 10, 'kg', 4500, 'PKR', true)
+  VALUES (v_prod_id, 'SEED-COT-BS15', '10 kg Bag', 10, 'kg', 450000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -111,7 +111,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'SEED-CRN-30Y87', '15 kg Bag', 15, 'kg', 12500, 'PKR', true)
+  VALUES (v_prod_id, 'SEED-CRN-30Y87', '15 kg Bag', 15, 'kg', 1250000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -126,7 +126,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'SEED-WHT-FSD08', '50 kg Bag', 50, 'kg', 5800, 'PKR', true)
+  VALUES (v_prod_id, 'SEED-WHT-FSD08', '50 kg Bag', 50, 'kg', 580000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -141,7 +141,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'FERT-UREA-SONA', '50 kg Bag', 50, 'kg', 4650, 'PKR', true)
+  VALUES (v_prod_id, 'FERT-UREA-SONA', '50 kg Bag', 50, 'kg', 465000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -156,7 +156,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'FERT-DAP-ENGRO', '50 kg Bag', 50, 'kg', 13200, 'PKR', true)
+  VALUES (v_prod_id, 'FERT-DAP-ENGRO', '50 kg Bag', 50, 'kg', 1320000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -171,7 +171,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'FERT-SOP-POTASH', '25 kg Bag', 25, 'kg', 14800, 'PKR', true)
+  VALUES (v_prod_id, 'FERT-SOP-POTASH', '25 kg Bag', 25, 'kg', 1480000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -186,7 +186,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'PEST-VIRTAKO-4KG', '4 kg Bag', 4, 'kg', 3200, 'PKR', true)
+  VALUES (v_prod_id, 'PEST-VIRTAKO-4KG', '4 kg Bag', 4, 'kg', 320000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -201,7 +201,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'PEST-CORAGEN-100ML', '100 mL Bottle', 100, 'ml', 2850, 'PKR', true)
+  VALUES (v_prod_id, 'PEST-CORAGEN-100ML', '100 mL Bottle', 100, 'ml', 285000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -216,7 +216,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'PEST-AMISTAR-200ML', '200 mL Bottle', 200, 'ml', 2400, 'PKR', true)
+  VALUES (v_prod_id, 'PEST-AMISTAR-200ML', '200 mL Bottle', 200, 'ml', 240000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -231,7 +231,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'NUTR-ZINC-5KG', '5 kg Bag', 5, 'kg', 1950, 'PKR', true)
+  VALUES (v_prod_id, 'NUTR-ZINC-5KG', '5 kg Bag', 5, 'kg', 195000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -246,7 +246,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'NUTR-NPK20-1KG', '1 kg Pack', 1, 'kg', 1600, 'PKR', true)
+  VALUES (v_prod_id, 'NUTR-NPK20-1KG', '1 kg Pack', 1, 'kg', 160000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)
@@ -261,7 +261,7 @@ BEGIN
   ON CONFLICT (slug) DO UPDATE SET status = 'published' RETURNING id INTO v_prod_id;
 
   INSERT INTO variants (product_id, sku, pack_size, pack_size_value, pack_size_unit, price_minor, currency, is_active)
-  VALUES (v_prod_id, 'TOOL-SPRAY-16L', '1 Unit Box', 1, 'unit', 7500, 'PKR', true)
+  VALUES (v_prod_id, 'TOOL-SPRAY-16L', '1 Unit Box', 1, 'unit', 750000, 'PKR', true)
   ON CONFLICT (sku) DO UPDATE SET price_minor = EXCLUDED.price_minor RETURNING id INTO v_var_id;
 
   INSERT INTO batches (variant_id, lot_number, manufactured_on, expires_on, received_quantity, on_hand, reserved, quarantined, status)

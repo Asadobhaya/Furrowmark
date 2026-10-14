@@ -671,7 +671,13 @@ export async function createProductAction(formData: FormData) {
 
   try {
     const { createStaffProduct } = await import("@/modules/catalog/service");
-    await createStaffProduct(parsed.data, staff.userId);
+    await createStaffProduct(
+      {
+        ...parsed.data,
+        priceMinor: parsed.data.priceMinor * 100,
+      },
+      staff.userId,
+    );
   } catch (e) {
     fail(
       "/staff/products",
