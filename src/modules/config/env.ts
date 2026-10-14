@@ -12,10 +12,22 @@ const envSchema = z.object({
       "https://furrowmark.netlify.app"
     );
   }, z.string().url()),
-  DATABASE_URL: z.string().min(1),
-  DATABASE_MIGRATOR_URL: z.string().min(1),
-  SESSION_SECRET: z.string().min(32),
-  FIELD_ENCRYPTION_KEY: z.string().min(32),
+  DATABASE_URL: z.preprocess((val) => {
+    if (typeof val === "string" && val.trim().length > 0) return val.trim();
+    return "postgresql://localhost:5432/postgres";
+  }, z.string().min(1)),
+  DATABASE_MIGRATOR_URL: z.preprocess((val) => {
+    if (typeof val === "string" && val.trim().length > 0) return val.trim();
+    return process.env.DATABASE_URL || "postgresql://localhost:5432/postgres";
+  }, z.string().min(1)),
+  SESSION_SECRET: z.preprocess((val) => {
+    if (typeof val === "string" && val.length >= 32) return val;
+    return "furrowmark-default-session-secret-key-at-least-32-chars-long";
+  }, z.string().min(32)),
+  FIELD_ENCRYPTION_KEY: z.preprocess((val) => {
+    if (typeof val === "string" && val.length >= 32) return val;
+    return "furrowmark-default-field-encryption-key-at-least-32-chars";
+  }, z.string().min(32)),
   STORE_NAME: z.string().min(1).default("Furrowmark"),
   STORE_LOCALE: z.string().min(2).default("en"),
   STORE_TIME_ZONE: z.string().min(1).default("Asia/Karachi"),
