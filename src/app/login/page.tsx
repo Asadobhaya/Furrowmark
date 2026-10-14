@@ -50,11 +50,14 @@ export default async function LoginPage({ searchParams }: Props) {
           Sign in
         </button>
       </form>
-      <p className="mt-4 text-sm">
+      <div className="mt-4 flex items-center justify-between text-sm">
         <Link href="/register" className="text-green-700 hover:underline">
           Create an account
         </Link>
-      </p>
+        <Link href="/staff/login" className="text-gray-600 hover:text-green-800 hover:underline">
+          Staff / Owner Portal
+        </Link>
+      </div>
     </main>
   );
 }

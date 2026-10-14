@@ -161,6 +161,26 @@ export async function loginAction(formData: FormData) {
     .select()
     .from(users)
     .where(eq(users.email, parsed.data.email));
+
+  if (
+    user &&
+    user.role !== "customer" &&
+    user.status === "active" &&
+    (await verifyPassword(parsed.data.password, user.passwordHash))
+  ) {
+    await recordAttempt({ key: limitKey, outcome: "success" });
+    await logAudit({
+      actorId: user.id,
+      action: "auth.staff_login_via_main",
+      entity: "staff",
+      entityId: user.id,
+      ...meta,
+    });
+    const { rawToken } = await createSession(user.id, "staff");
+    await setCookie(STAFF_COOKIE, rawToken, 12 * 60 * 60);
+    redirect("/staff/orders");
+  }
+
   const ok =
     user &&
     user.role === "customer" &&

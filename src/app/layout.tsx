@@ -75,6 +75,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Link href="/terms" className="hover:underline">
                 Terms of Service
               </Link>
+              <Link href="/staff/login" className="hover:underline text-gray-400 hover:text-gray-600">
+                Staff Portal
+              </Link>
             </div>
           </div>
 
