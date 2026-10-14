@@ -36,19 +36,12 @@ export default async function ProductList({ searchParams }: Props) {
         {products.map((p) => (
           <li key={p.id} className="border border-gray-200 rounded-lg p-4 flex flex-col h-full bg-white shadow-sm hover:shadow-md transition">
             <Link href={`/products/${p.id}`} className="block mb-3">
-              <div
-                className="bg-emerald-50 border border-emerald-100 rounded-md h-44 flex flex-col items-center justify-center p-4 mb-3 text-center"
-                aria-hidden="true"
-              >
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full mb-2">
-                  {p.className}
-                </span>
-                <p className="text-sm font-semibold text-emerald-950 line-clamp-2">
-                  {p.name}
-                </p>
-                <span className="text-xs text-emerald-700 mt-2 font-medium">
-                  {p.brandName}
-                </span>
+              <div className="bg-gray-50 border border-gray-100 rounded-md h-48 flex items-center justify-center p-3 mb-3 overflow-hidden">
+                <img
+                  src={p.imageUrl}
+                  alt={p.name}
+                  className="max-h-full max-w-full object-contain hover:scale-105 transition duration-200"
+                />
               </div>
               <h2 className="text-base font-semibold text-gray-900 mb-1 hover:text-green-700 line-clamp-2" title={p.name}>
                 {p.name}

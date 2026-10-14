@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="100%">
+  <rect width="300" height="300" fill="#F5F3FF" rx="16"/>
+  <!-- Foil Pouch Body -->
+  <path d="M75,70 L225,70 L210,250 L90,250 Z" fill="#FFFFFF" stroke="#7C3AED" stroke-width="4"/>
+  <!-- Foil Pouch Heat Seal -->
+  <rect x="70" y="55" width="160" height="15" fill="#7C3AED" rx="2"/>
+  <line x1="75" y1="62" x2="225" y2="62" stroke="#C4B5FD" stroke-width="2" stroke-dasharray="4,4"/>
+  <!-- Brand Header Banner -->
+  <rect x="80" y="80" width="140" height="32" fill="#5B21B6" rx="4"/>
+  <text x="150" y="101" fill="#FFFFFF" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">SYNGENTA</text>
+  <!-- Granules Target Motif -->
+  <circle cx="150" cy="155" r="28" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="135" y="145" width="8" height="8" fill="#7C3AED" rx="1"/>
+  <rect x="155" y="145" width="8" height="8" fill="#7C3AED" rx="1"/>
+  <rect x="145" y="158" width="8" height="8" fill="#7C3AED" rx="1"/>
+  <!-- Product Label -->
+  <text x="150" y="205" fill="#4C1D95" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">VIRTAKO 0.6% GR</text>
+  <text x="150" y="222" fill="#6D28D9" font-family="sans-serif" font-size="11" text-anchor="middle">STEM BORER EXPERT</text>
+  <rect x="110" y="230" width="80" height="18" fill="#EDE9FE" rx="9"/>
+  <text x="150" y="243" fill="#6D28D9" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="middle">4 KG NET</text>
+</svg>

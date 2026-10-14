@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="100%">
+  <rect width="300" height="300" fill="#F0FDF4" rx="16"/>
+  <!-- Bag Body -->
+  <path d="M70,75 L230,75 L215,255 L85,255 Z" fill="#FFFFFF" stroke="#059669" stroke-width="4"/>
+  <!-- Bag Top Stitch / Seal -->
+  <rect x="60" y="60" width="180" height="15" fill="#059669" rx="3"/>
+  <line x1="60" y1="67" x2="240" y2="67" stroke="#34D399" stroke-width="2" stroke-dasharray="6,4"/>
+  <!-- Brand Header Banner on Bag -->
+  <rect x="75" y="90" width="150" height="36" fill="#047857" rx="4"/>
+  <text x="150" y="113" fill="#FFFFFF" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">ENGRO AGRITECH</text>
+  <!-- Cotton Graphic Motif -->
+  <circle cx="150" cy="165" r="28" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <circle cx="140" cy="160" r="12" fill="#FFFFFF" stroke="#059669" stroke-width="1.5"/>
+  <circle cx="160" cy="160" r="12" fill="#FFFFFF" stroke="#059669" stroke-width="1.5"/>
+  <circle cx="150" cy="172" r="12" fill="#FFFFFF" stroke="#059669" stroke-width="1.5"/>
+  <path d="M150,185 L150,200" stroke="#047857" stroke-width="3" stroke-linecap="round"/>
+  <!-- Product Label -->
+  <text x="150" y="220" fill="#064E3B" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">COTTON SEED BS-15</text>
+  <rect x="110" y="232" width="80" height="18" fill="#D1FAE5" rx="9"/>
+  <text x="150" y="245" fill="#047857" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="middle">10 KG NET</text>
+</svg>

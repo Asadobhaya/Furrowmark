@@ -26,6 +26,32 @@ export interface CatalogProductSummary {
   brandName: string;
   categoryName: string;
   startingPriceMinor: number;
+  imageUrl: string;
+}
+
+export function getProductImageUrl(slug: string, className: string): string {
+  const s = slug.toLowerCase();
+  if (s.includes("cotton")) return "/images/products/seed-cotton.svg";
+  if (s.includes("corn") || s.includes("maize")) return "/images/products/seed-corn.svg";
+  if (s.includes("wheat")) return "/images/products/seed-wheat.svg";
+  if (s.includes("urea")) return "/images/products/fertilizer-urea.svg";
+  if (s.includes("dap")) return "/images/products/fertilizer-dap.svg";
+  if (s.includes("sop") || s.includes("potassium") || s.includes("potash")) return "/images/products/fertilizer-sop.svg";
+  if (s.includes("virtako")) return "/images/products/pesticide-virtako.svg";
+  if (s.includes("coragen")) return "/images/products/pesticide-coragen.svg";
+  if (s.includes("amistar")) return "/images/products/pesticide-amistar.svg";
+  if (s.includes("zinc") || s.includes("nutrivex")) return "/images/products/nutrient-zinc.svg";
+  if (s.includes("booster") || s.includes("npk")) return "/images/products/nutrient-cropbooster.svg";
+  if (s.includes("sprayer") || s.includes("knapsack")) return "/images/products/tool-sprayer.svg";
+
+  switch (className) {
+    case "seed": return "/images/products/seed-cotton.svg";
+    case "fertiliser": return "/images/products/fertilizer-urea.svg";
+    case "pesticide": return "/images/products/pesticide-coragen.svg";
+    case "nutrient": return "/images/products/nutrient-zinc.svg";
+    case "tool": return "/images/products/tool-sprayer.svg";
+    default: return "/images/products/seed-cotton.svg";
+  }
 }
 
 export async function searchCatalog(
@@ -83,6 +109,7 @@ export async function searchCatalog(
     brandName: r.brandName,
     categoryName: r.categoryName,
     startingPriceMinor: Number(r.startingPriceMinor ?? 0),
+    imageUrl: getProductImageUrl(r.slug, r.className),
   }));
 }
 
@@ -96,9 +123,12 @@ export interface ProductVariantDetail {
 export interface ProductDetail {
   id: string;
   name: string;
+  slug: string;
+  className: string;
   description: string | null;
   brandName: string;
   categoryName: string;
+  imageUrl: string;
   variants: ProductVariantDetail[];
 }
 
@@ -123,6 +153,8 @@ export async function getProductById(
     .select({
       id: products.id,
       name: products.name,
+      slug: products.slug,
+      className: products.class,
       description: products.description,
       brandName: brands.name,
       categoryName: categories.name,
@@ -145,6 +177,7 @@ export async function getProductById(
 
   return {
     ...row,
+    imageUrl: getProductImageUrl(row.slug, row.className),
     variants: variantRows.map((v) => ({
       ...v,
       priceMinor: Number(v.priceMinor),

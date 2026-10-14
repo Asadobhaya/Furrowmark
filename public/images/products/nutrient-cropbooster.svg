@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="100%">
+  <rect width="300" height="300" fill="#F0FDF4" rx="16"/>
+  <!-- Box Body -->
+  <rect x="80" y="65" width="140" height="190" fill="#FFFFFF" stroke="#059669" stroke-width="4" rx="6"/>
+  <!-- Top Lid Flap -->
+  <polygon points="80,65 105,45 225,45 220,65" fill="#D1FAE5" stroke="#059669" stroke-width="2"/>
+  <polygon points="220,65 225,45 240,65" fill="#A7F3D0" stroke="#059669" stroke-width="2"/>
+  <!-- Brand Header Banner -->
+  <rect x="85" y="80" width="130" height="34" fill="#065F46" rx="3"/>
+  <text x="150" y="102" fill="#FFFFFF" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">BAYER CROP SCIENCE</text>
+  <!-- NPK Formula Ring -->
+  <circle cx="150" cy="155" r="30" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="150" y="152" fill="#047857" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="middle">SOLUBLE FOLIAR</text>
+  <text x="150" y="170" fill="#065F46" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">20-20-20</text>
+  <!-- Product Label -->
+  <text x="150" y="210" fill="#064E3B" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">CROP BOOSTER</text>
+  <text x="150" y="225" fill="#059669" font-family="sans-serif" font-size="9" text-anchor="middle">+ CHELATED TE</text>
+  <rect x="110" y="232" width="80" height="16" fill="#D1FAE5" rx="8"/>
+  <text x="150" y="244" fill="#047857" font-family="sans-serif" font-size="9" font-weight="bold" text-anchor="middle">1 KG NET</text>
+</svg>
