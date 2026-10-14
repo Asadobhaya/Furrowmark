@@ -17,8 +17,14 @@ async function main() {
     throw new Error("STAFF_EMAIL and STAFF_PASSWORD are required");
   }
   const passwordHash = await hashPassword(password);
-  await getDb().insert(users).values({ email, passwordHash, role });
-  console.log(`Created ${role} account for ${email}`);
+  await getDb()
+    .insert(users)
+    .values({ email, passwordHash, role, status: "active" })
+    .onConflictDoUpdate({
+      target: users.email,
+      set: { passwordHash, role, status: "active" },
+    });
+  console.log(`Created or updated ${role} account for ${email}`);
 }
 
 main()

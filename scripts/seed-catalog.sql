@@ -22,16 +22,46 @@ DECLARE
   v_prod_id UUID;
   v_var_id UUID;
 BEGIN
-  -- 1. Ensure system staff user exists
+  -- 1. Ensure system owner and staff users exist with valid Argon2id password hashes
+  -- Password for owner@furrowmark.pk and staff@furrowmark.pk: Furrowmark2026!#
   INSERT INTO users (id, email, password_hash, role, status)
   VALUES (
     '00000000-0000-0000-0000-000000000001',
-    'store@furrowmark.pk',
-    '$argon2id$v=19$m=65536,t=3,p=4$system',
+    'owner@furrowmark.pk',
+    '$argon2id$v=19$m=65536,t=3,p=4$YXV7beyZ602wugmLKHpnwg$DUGm9elAFEEqRMp956uUs1KknpPDFd8CHmK8iD3sSPY',
     'owner',
     'active'
   )
-  ON CONFLICT (email) DO NOTHING;
+  ON CONFLICT (email) DO UPDATE SET
+    password_hash = EXCLUDED.password_hash,
+    role = 'owner',
+    status = 'active';
+
+  INSERT INTO users (id, email, password_hash, role, status)
+  VALUES (
+    '00000000-0000-0000-0000-000000000002',
+    'staff@furrowmark.pk',
+    '$argon2id$v=19$m=65536,t=3,p=4$YXV7beyZ602wugmLKHpnwg$DUGm9elAFEEqRMp956uUs1KknpPDFd8CHmK8iD3sSPY',
+    'staff',
+    'active'
+  )
+  ON CONFLICT (email) DO UPDATE SET
+    password_hash = EXCLUDED.password_hash,
+    role = 'staff',
+    status = 'active';
+
+  INSERT INTO users (id, email, password_hash, role, status)
+  VALUES (
+    '00000000-0000-0000-0000-000000000003',
+    'store@furrowmark.pk',
+    '$argon2id$v=19$m=65536,t=3,p=4$YXV7beyZ602wugmLKHpnwg$DUGm9elAFEEqRMp956uUs1KknpPDFd8CHmK8iD3sSPY',
+    'owner',
+    'active'
+  )
+  ON CONFLICT (email) DO UPDATE SET
+    password_hash = EXCLUDED.password_hash,
+    role = 'owner',
+    status = 'active';
 
   SELECT id INTO v_user_id FROM users ORDER BY created_at ASC LIMIT 1;
 
