@@ -242,7 +242,7 @@ export default async function ContactPage({ searchParams }: Props) {
 
             <button
               type="submit"
-              className="w-full bg-emerald-800 hover:bg-emerald-900 active:scale-98 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-xs text-xs sm:text-sm"
+              className="w-full bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white font-bold py-2.5 sm:py-3 px-4 rounded-xl transition shadow-xs text-xs sm:text-sm"
             >
               Submit Ticket to Multan Depot Desk
             </button>

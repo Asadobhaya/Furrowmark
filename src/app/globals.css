@@ -11,6 +11,11 @@ body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
+/* Eliminate 300ms mobile touch delay for instant tap response */
+button, a {
+  touch-action: manipulation;
+}
+
 /* Hide scrollbar for clean horizontal product / category carousels on mobile */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

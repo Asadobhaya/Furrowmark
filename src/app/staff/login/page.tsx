@@ -67,7 +67,7 @@ export default async function StaffLoginPage({ searchParams }: Props) {
 
           <button
             type="submit"
-            className="w-full bg-gray-900 hover:bg-black active:scale-98 text-white font-bold py-3 px-4 rounded-xl transition shadow-xs text-xs sm:text-sm"
+            className="w-full bg-gray-900 hover:bg-black active:scale-95 text-white font-bold py-3 px-4 rounded-xl transition shadow-xs text-xs sm:text-sm"
           >
             Authenticate to Staff Desk
           </button>
