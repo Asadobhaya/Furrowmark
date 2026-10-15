@@ -27,7 +27,85 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* Chatzy Embedded Chatbot Widget */}
+        {/* Chatzy Embedded Chatbot Widget & Mobile Shadow-DOM Elevation Script */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (typeof window === "undefined") return;
+
+                function injectShadowStyles(root) {
+                  if (!root) return;
+                  try {
+                    var style = root.querySelector("#chatzy-mobile-override");
+                    if (!style) {
+                      style = document.createElement("style");
+                      style.id = "chatzy-mobile-override";
+                      root.appendChild(style);
+                    }
+                    var isProduct = Boolean(document.querySelector(".product-mobile-bar"));
+                    var bottomPos = isProduct ? "9.5rem" : "6rem";
+                    var css = "@media (max-width: 768px) { " +
+                      ":root, :host { --chatzy-icon-width: 52px !important; --chatzy-icon-height: 52px !important; } " +
+                      ".chatzy-chatbot-wrapper { bottom: " + bottomPos + " !important; right: 1.25rem !important; margin: 0 !important; } " +
+                      ".chatzy-chatbot-icon { width: 52px !important; height: 52px !important; } " +
+                      ".chatzy-chatbot-icon img { width: 100% !important; height: 100% !important; object-fit: cover !important; } " +
+                      "}";
+                    if (style.textContent !== css) {
+                      style.textContent = css;
+                    }
+                    if (root.lastChild !== style) {
+                      root.appendChild(style);
+                    }
+                  } catch (e) {}
+                }
+
+                function handleShadowRoot(root) {
+                  if (!root) return;
+                  injectShadowStyles(root);
+                  try {
+                    var obs = new MutationObserver(function() {
+                      injectShadowStyles(root);
+                    });
+                    obs.observe(root, { childList: true });
+                  } catch (e) {}
+                }
+
+                try {
+                  var origAttach = Element.prototype.attachShadow;
+                  Element.prototype.attachShadow = function() {
+                    var root = origAttach.apply(this, arguments);
+                    var self = this;
+                    setTimeout(function() {
+                      if (self.id === "chatzy-shadow-host" || !self.id) {
+                        handleShadowRoot(root);
+                      }
+                    }, 0);
+                    return root;
+                  };
+                } catch (e) {}
+
+                function checkExisting() {
+                  var host = document.getElementById("chatzy-shadow-host");
+                  if (host && host.shadowRoot) {
+                    handleShadowRoot(host.shadowRoot);
+                  }
+                }
+
+                if (document.readyState === "loading") {
+                  document.addEventListener("DOMContentLoaded", checkExisting);
+                } else {
+                  checkExisting();
+                }
+
+                var pollTimer = setInterval(checkExisting, 250);
+                setTimeout(function() {
+                  clearInterval(pollTimer);
+                }, 15000);
+              })();
+            `,
+          }}
+        />
         <link
           rel="stylesheet"
           href="https://chatzy-kb-store.s3.amazonaws.com/icons/5ab07987-b5db-477c-82ff-1287e0883acb"
@@ -43,16 +121,16 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             __html: `
               @media (max-width: 768px) {
                 :root {
-                  --chatzy-icon-width: 56px !important;
-                  --chatzy-icon-height: 56px !important;
+                  --chatzy-icon-width: 52px !important;
+                  --chatzy-icon-height: 52px !important;
                 }
                 .chatzy-chatbot-wrapper {
-                  bottom: 4.75rem !important;
-                  right: 1rem !important;
+                  bottom: 6rem !important;
+                  right: 1.25rem !important;
                   margin: 0 !important;
                 }
                 body:has(.product-mobile-bar) .chatzy-chatbot-wrapper {
-                  bottom: 8.5rem !important;
+                  bottom: 9.5rem !important;
                 }
               }
             `,
