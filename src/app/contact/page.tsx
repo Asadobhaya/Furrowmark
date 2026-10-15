@@ -17,26 +17,27 @@ export default async function ContactPage({ searchParams }: Props) {
   const { ticket, success, error } = await searchParams;
 
   return (
-    <main className="max-w-5xl mx-auto p-4 md:p-8 space-y-8">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8">
       {/* Header */}
-      <div className="border-b pb-4">
-        <h1 className="text-3xl font-bold text-gray-900">
+      <div className="border-b border-gray-200 pb-4">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
           Contact Furrowmark & Support Desk
         </h1>
-        <p className="text-sm text-gray-600 mt-1">
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">
           Direct warehouse communication, agronomic crop advisory, order inquiries, and statutory RMA support.
         </p>
       </div>
 
       {/* Success Notification */}
       {success && ticket && (
-        <div className="bg-emerald-50 border border-emerald-300 rounded-xl p-5 text-emerald-950 space-y-2">
+        <div className="bg-emerald-50 border border-emerald-300 rounded-2xl p-5 text-emerald-950 space-y-2 shadow-2xs">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-lg">Support Ticket Created Successfully</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+            <span className="font-bold text-base sm:text-lg">Support Ticket Created Successfully</span>
           </div>
-          <p className="text-sm">
+          <p className="text-xs sm:text-sm">
             Your inquiry has been assigned reference number:{" "}
-            <strong className="font-mono text-base text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">
+            <strong className="font-mono text-sm sm:text-base text-emerald-900 bg-emerald-100 px-2.5 py-0.5 rounded-lg border border-emerald-200">
               {ticket}
             </strong>
           </p>
@@ -47,25 +48,25 @@ export default async function ContactPage({ searchParams }: Props) {
       )}
 
       {error && (
-        <div className="bg-red-50 border border-red-300 rounded-xl p-4 text-red-800 text-sm">
+        <div role="alert" className="bg-red-50 border border-red-300 rounded-2xl p-4 text-red-800 text-xs sm:text-sm font-medium">
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-start">
         {/* Physical Footprint & Dealership Credentials */}
         <div className="space-y-6">
-          <div className="border rounded-2xl p-6 bg-gray-50/50 space-y-4">
-            <h2 className="text-xl font-bold text-gray-900 border-b pb-2">
+          <div className="border border-gray-200/90 rounded-3xl p-5 sm:p-6 bg-white shadow-2xs space-y-4">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 border-b border-gray-100 pb-3">
               Multan Depot & Physical Headquarters
             </h2>
 
-            <div className="space-y-3 text-sm text-gray-700">
+            <div className="space-y-3.5 text-xs sm:text-sm text-gray-700">
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
                   Physical Address:
                 </p>
-                <p className="font-medium text-gray-900 mt-0.5">
+                <p className="font-semibold text-gray-900 mt-1 leading-snug">
                   Furrowmark Agricultural Depot
                   <br />
                   Basti Bair Wala, Mouza Mardan Pur
@@ -75,60 +76,66 @@ export default async function ContactPage({ searchParams }: Props) {
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Helpline (Tap to chat on WhatsApp):
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                  Helpline (Click to chat on WhatsApp):
                 </p>
-                <div className="flex flex-col gap-2 mt-1">
+                <div className="flex flex-col gap-2 mt-2">
                   <a
                     href="https://wa.me/923005534323"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 w-fit bg-green-600 hover:bg-green-700 text-white font-semibold px-3 py-1.5 rounded-lg transition"
+                    className="inline-flex items-center gap-2 w-full sm:w-fit bg-green-600 hover:bg-green-700 active:scale-95 text-white font-bold px-4 py-2.5 rounded-xl transition text-xs shadow-2xs"
                   >
-                    WhatsApp: +92 300 5534323
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.874.801 2.791.801 3.18 0 5.767-2.587 5.767-5.766.001-3.182-2.585-5.787-5.767-5.787zm3.377 8.219c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.072-.494-1.637-.674-2.678-2.336-2.76-2.444-.081-.108-.66-1.876-.66-1.677 0-.796.417-1.189.566-1.343.149-.153.324-.192.433-.192.108 0 .216.002.311.007.1.005.234-.038.366.279.135.327.461 1.124.502 1.206.041.082.069.177.014.286-.054.108-.082.176-.162.272-.081.096-.17.214-.243.287-.081.082-.165.171-.071.334.095.162.42 1.002.902 1.431.62.551 1.143.722 1.305.803.163.082.257.069.351-.041.095-.109.405-.472.513-.635.109-.163.217-.136.365-.082.149.054.945.446 1.107.527.162.082.27.122.311.19.041.069.041.405-.103.81zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.175L2 22l4.966-1.385A9.954 9.954 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+                    </svg>
+                    <span>WhatsApp: +92 300 5534323</span>
                   </a>
                   <a
                     href="https://wa.me/923004634494"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 w-fit bg-green-600 hover:bg-green-700 text-white font-semibold px-3 py-1.5 rounded-lg transition"
+                    className="inline-flex items-center gap-2 w-full sm:w-fit bg-green-600 hover:bg-green-700 active:scale-95 text-white font-bold px-4 py-2.5 rounded-xl transition text-xs shadow-2xs"
                   >
-                    WhatsApp: +92 300 4634494
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.874.801 2.791.801 3.18 0 5.767-2.587 5.767-5.766.001-3.182-2.585-5.787-5.767-5.787zm3.377 8.219c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.072-.494-1.637-.674-2.678-2.336-2.76-2.444-.081-.108-.66-1.876-.66-1.677 0-.796.417-1.189.566-1.343.149-.153.324-.192.433-.192.108 0 .216.002.311.007.1.005.234-.038.366.279.135.327.461 1.124.502 1.206.041.082.069.177.014.286-.054.108-.082.176-.162.272-.081.096-.17.214-.243.287-.081.082-.165.171-.071.334.095.162.42 1.002.902 1.431.62.551 1.143.722 1.305.803.163.082.257.069.351-.041.095-.109.405-.472.513-.635.109-.163.217-.136.365-.082.149.054.945.446 1.107.527.162.082.27.122.311.19.041.069.041.405-.103.81zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.175L2 22l4.966-1.385A9.954 9.954 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+                    </svg>
+                    <span>WhatsApp: +92 300 4634494</span>
                   </a>
                 </div>
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
                   Support Email:
                 </p>
-                <p className="font-medium text-gray-900 mt-0.5">
+                <p className="font-semibold text-gray-900 mt-0.5">
                   support@furrowmark.pk
                 </p>
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
                   Operating Hours:
                 </p>
-                <p className="font-medium text-gray-900 mt-0.5">
+                <p className="font-semibold text-gray-900 mt-0.5">
                   Monday to Saturday: 8:00 AM to 6:00 PM PKT
                   <br />
-                  <span className="text-xs text-gray-500">Sunday: Closed (Emergency dispatch on call)</span>
+                  <span className="text-xs text-gray-500 font-normal">Sunday: Closed (Emergency dispatch on call)</span>
                 </p>
               </div>
             </div>
           </div>
 
           {/* Dealership Regulatory Verification */}
-          <div className="border border-emerald-200 rounded-2xl p-6 bg-emerald-50/40 space-y-3 text-xs text-emerald-950">
+          <div className="border border-emerald-200 rounded-3xl p-5 sm:p-6 bg-emerald-50/50 space-y-3 text-xs text-emerald-950 shadow-2xs">
             <h3 className="font-bold text-sm text-emerald-950">
               Official Dealer License Credentials
             </h3>
             <div className="space-y-2">
               <p>
                 <strong>Punjab Pesticide Dealer License:</strong>{" "}
-                <span className="font-mono bg-white px-2 py-0.5 rounded border border-emerald-200">
+                <span className="font-mono bg-white px-2 py-0.5 rounded-lg border border-emerald-200 font-bold">
                   DEP/MLT-AGRO/2024-8841
                 </span>
                 <br />
@@ -138,7 +145,7 @@ export default async function ContactPage({ searchParams }: Props) {
               </p>
               <p>
                 <strong>Federal Seed Dealer Registration:</strong>{" "}
-                <span className="font-mono bg-white px-2 py-0.5 rounded border border-emerald-200">
+                <span className="font-mono bg-white px-2 py-0.5 rounded-lg border border-emerald-200 font-bold">
                   FSCRD-PB-5592
                 </span>
                 <br />
@@ -151,9 +158,9 @@ export default async function ContactPage({ searchParams }: Props) {
         </div>
 
         {/* Submit Support Ticket Form */}
-        <section className="border border-gray-200 rounded-2xl p-6 bg-white shadow-sm space-y-4">
+        <section className="border border-gray-200/90 rounded-3xl p-5 sm:p-7 bg-white shadow-2xs space-y-4">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">
               Submit a Support Ticket
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">
@@ -161,9 +168,9 @@ export default async function ContactPage({ searchParams }: Props) {
             </p>
           </div>
 
-          <form action={submitSupportTicketAction} className="space-y-4 text-sm">
+          <form action={submitSupportTicketAction} className="space-y-4 text-xs sm:text-sm">
             <div>
-              <label htmlFor="name" className="block font-medium text-gray-700 mb-1">
+              <label htmlFor="name" className="block font-bold text-gray-700 mb-1">
                 Your Full Name *
               </label>
               <input
@@ -172,14 +179,14 @@ export default async function ContactPage({ searchParams }: Props) {
                 name="name"
                 required
                 placeholder="e.g. Malik Bahawal"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                className="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 bg-white"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="phone" className="block font-medium text-gray-700 mb-1">
-                  Phone / Mobile Number *
+                <label htmlFor="phone" className="block font-bold text-gray-700 mb-1">
+                  Phone / WhatsApp Number *
                 </label>
                 <input
                   type="tel"
@@ -187,12 +194,12 @@ export default async function ContactPage({ searchParams }: Props) {
                   name="phone"
                   required
                   placeholder="03001234567"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  className="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 bg-white"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block font-medium text-gray-700 mb-1">
+                <label htmlFor="email" className="block font-bold text-gray-700 mb-1">
                   Email Address (Optional)
                 </label>
                 <input
@@ -200,13 +207,13 @@ export default async function ContactPage({ searchParams }: Props) {
                   id="email"
                   name="email"
                   placeholder="farmer@example.com"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  className="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 bg-white"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="subject" className="block font-medium text-gray-700 mb-1">
+              <label htmlFor="subject" className="block font-bold text-gray-700 mb-1">
                 Inquiry Subject *
               </label>
               <input
@@ -215,12 +222,12 @@ export default async function ContactPage({ searchParams }: Props) {
                 name="subject"
                 required
                 placeholder="e.g. Coragen dosage for cotton armyworm or Order FM-2026-..."
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                className="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 bg-white"
               />
             </div>
 
             <div>
-              <label htmlFor="message" className="block font-medium text-gray-700 mb-1">
+              <label htmlFor="message" className="block font-bold text-gray-700 mb-1">
                 Detailed Message *
               </label>
               <textarea
@@ -229,13 +236,13 @@ export default async function ContactPage({ searchParams }: Props) {
                 rows={5}
                 required
                 placeholder="Describe your crop type, pest infestation symptoms, order reference number, or delivery inquiry..."
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                className="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 bg-white"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-3 px-4 rounded-lg transition shadow-sm"
+              className="w-full bg-emerald-800 hover:bg-emerald-900 active:scale-98 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-xs text-xs sm:text-sm"
             >
               Submit Ticket to Multan Depot Desk
             </button>
@@ -247,11 +254,11 @@ export default async function ContactPage({ searchParams }: Props) {
         </section>
       </div>
 
-      <div className="pt-4 border-t flex items-center justify-between text-sm">
-        <Link href="/" className="text-emerald-700 hover:underline">
+      <div className="pt-4 border-t border-gray-200 flex items-center justify-between text-xs sm:text-sm">
+        <Link href="/" className="text-emerald-800 font-semibold hover:underline">
           ← Back to Homepage
         </Link>
-        <Link href="/about" className="text-emerald-700 hover:underline">
+        <Link href="/about" className="text-emerald-800 font-semibold hover:underline">
           Learn About Our Dealership →
         </Link>
       </div>

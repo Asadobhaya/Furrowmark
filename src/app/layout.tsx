@@ -1,7 +1,11 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import "./globals.css";
+import { Navbar } from "./components/Navbar";
+import { MobileBottomNav } from "./components/MobileBottomNav";
 import { ChatWidget } from "./components/ChatWidget";
+import { getCartId, getCustomerSession, getStaffSession } from "@/modules/web/session";
+import { CartService } from "@/modules/cart/service";
 
 export const metadata = {
   title: "Furrowmark | Certified Agricultural Inputs Store",
@@ -9,106 +13,170 @@ export const metadata = {
     "Licensed dealer for genuine hybrid seeds, regulated agrochemicals, fertilizers, and farm equipment in Pakistan.",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const cartId = await getCartId(false).catch(() => null);
+  const cart = cartId ? await CartService.getCartView({ cartId }).catch(() => null) : null;
+  const cartCount = cart?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
+  const customerSession = await getCustomerSession().catch(() => null);
+  const staffSession = await getStaffSession().catch(() => null);
+
+  const activeEmail = staffSession?.userId ? "Staff Desk" : customerSession?.userId;
+  const isStaff = !!staffSession;
+
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col bg-white text-gray-900">
-        <header className="border-b p-4 flex flex-wrap items-center gap-4 md:gap-6 bg-white sticky top-0 z-40 shadow-xs">
-          <Link href="/" className="font-bold text-xl text-emerald-800 tracking-tight">
-            Furrowmark
-          </Link>
-          <nav className="flex items-center gap-4 text-sm font-medium">
-            <Link href="/products" className="hover:text-emerald-700">
-              Products
-            </Link>
-            <Link href="/about" className="hover:text-emerald-700">
-              About Us
-            </Link>
-            <Link href="/contact" className="hover:text-emerald-700">
-              Contact & Support
-            </Link>
-            <Link href="/payment-methods" className="hover:text-emerald-700">
-              Payment Methods
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4 ml-auto text-sm font-medium">
-            <Link href="/cart" className="hover:text-emerald-700 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200">
-              Cart
-            </Link>
-            <Link href="/login" className="hover:text-emerald-700 text-gray-600">
-              Sign in
-            </Link>
-          </div>
-        </header>
+      <body className="min-h-screen flex flex-col bg-slate-50 text-gray-900 antialiased selection:bg-emerald-100 selection:text-emerald-900 pb-16 md:pb-0">
+        {/* Responsive Navbar with Desktop & Mobile Menus */}
+        <Navbar cartCount={cartCount} userEmail={activeEmail} isStaff={isStaff} />
 
+        {/* Main Content Area */}
         <div className="flex-1">{children}</div>
 
-        <footer className="border-t bg-gray-50 text-gray-600 text-sm mt-12 py-8 px-4 space-y-6">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="text-center md:text-left space-y-1">
-              <p className="font-semibold text-gray-800">
-                Furrowmark Agricultural Inputs Store · Certified Genuine Supplies
-              </p>
-              <p className="text-xs text-gray-500">
-                Punjab Pesticide License: DEP/MLT-AGRO/2024-8841 · FSC&RD Seed Reg: FSCRD-PB-5592
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
-              <Link href="/about" className="hover:underline">
-                About Dealership
-              </Link>
-              <Link href="/contact" className="hover:underline">
-                Contact & Tickets
-              </Link>
-              <Link href="/payment-methods" className="hover:underline">
-                Payment Methods
-              </Link>
-              <Link href="/shipping-policy" className="hover:underline">
-                Shipping Policy
-              </Link>
-              <Link href="/return-policy" className="hover:underline">
-                Return & RMA Policy
-              </Link>
-              <Link href="/privacy" className="hover:underline">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="hover:underline">
-                Terms of Service
-              </Link>
-              <Link href="/staff/login" className="hover:underline text-gray-400 hover:text-gray-600">
-                Staff Portal
-              </Link>
-            </div>
-          </div>
+        {/* Professional Enterprise Agricultural Footer */}
+        <footer className="border-t border-gray-200 bg-white text-gray-600 text-xs sm:text-sm mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {/* Col 1: Dealership Identity & Location */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-800 flex items-center justify-center text-white text-xs font-bold">
+                    FM
+                  </div>
+                  <span className="font-extrabold text-base text-emerald-950 tracking-tight">
+                    Furrowmark Multan
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  Licensed direct-distribution depot supplying verified formulator-sealed seeds, crop protection chemicals, and fertilizers to growers across Pakistan.
+                </p>
+                <div className="pt-1 text-xs text-gray-700 space-y-1">
+                  <p>
+                    <strong>Depot:</strong> Basti Bair Wala, Mouza Mardan Pur, Multan, Punjab
+                  </p>
+                  <p>
+                    <strong>Hours:</strong> Mon - Sat: 8:00 AM - 6:00 PM PKT
+                  </p>
+                </div>
+              </div>
 
-          {/* Secure Payment and Depot Information Footer */}
-          <div className="max-w-6xl mx-auto border-t border-gray-200 pt-4 text-xs text-gray-500 flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
-            <p>
-              <strong>Depot Address:</strong> Basti Bair Wala, Mouza Mardan Pur, Multan · Helpline (WhatsApp):{" "}
-              <a
-                href="https://wa.me/923005534323"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-emerald-700 font-semibold hover:underline"
-              >
-                +92 300 5534323
-              </a>
-              {" · "}
-              <a
-                href="https://wa.me/923004634494"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-emerald-700 font-semibold hover:underline"
-              >
-                +92 300 4634494
-              </a>
-            </p>
-            <p>
-              <strong>Payment Security:</strong> Advance bank transfer details are provided securely after order checkout.
-            </p>
+              {/* Col 2: Catalog Categories */}
+              <div className="space-y-3">
+                <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider">
+                  Product Categories
+                </h3>
+                <ul className="space-y-2 text-xs">
+                  <li>
+                    <Link href="/products?category=seeds" className="hover:text-emerald-800 transition">
+                      Certified Hybrid Seeds
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products?category=fertilizers" className="hover:text-emerald-800 transition">
+                      Macronutrient Fertilizers (Urea / DAP / SOP)
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products?category=plant-protection" className="hover:text-emerald-800 transition">
+                      Plant Protection (Coragen, Nativo, Virtako)
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products?category=nutrients-foliar" className="hover:text-emerald-800 transition">
+                      Chelated Micronutrients & Foliars
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products?category=agricultural-tools" className="hover:text-emerald-800 transition">
+                      Knapsack Sprayers & Equipment
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Col 3: Direct Farmer Helplines & WhatsApp */}
+              <div className="space-y-3">
+                <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider">
+                  Helpline & Support Desk
+                </h3>
+                <div className="space-y-2">
+                  <a
+                    href="https://wa.me/923005534323"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-semibold px-3 py-2 rounded-xl text-xs transition border border-emerald-200 w-full"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span>WhatsApp: +92 300 5534323</span>
+                  </a>
+                  <a
+                    href="https://wa.me/923004634494"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-semibold px-3 py-2 rounded-xl text-xs transition border border-emerald-200 w-full"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span>WhatsApp: +92 300 4634494</span>
+                  </a>
+                </div>
+                <div className="pt-1 text-xs">
+                  <Link href="/contact" className="text-emerald-700 font-medium hover:underline">
+                    Submit Formal Support Ticket →
+                  </Link>
+                </div>
+              </div>
+
+              {/* Col 4: Statutory Licensing & Policies */}
+              <div className="space-y-3">
+                <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider">
+                  Statutory Licenses & Legal
+                </h3>
+                <div className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-[11px] text-gray-600 space-y-1">
+                  <p>
+                    <strong>Pesticide License:</strong> DEP/MLT-AGRO/2024-8841
+                  </p>
+                  <p>
+                    <strong>Seed Registration:</strong> FSCRD-PB-5592
+                  </p>
+                  <p className="text-[10px] text-gray-400 mt-1">
+                    Directorate General of Pest Warning & Federal Seed Certification.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500 pt-1">
+                  <Link href="/shipping-policy" className="hover:text-emerald-800">
+                    Shipping Policy
+                  </Link>
+                  <Link href="/return-policy" className="hover:text-emerald-800">
+                    Return Policy
+                  </Link>
+                  <Link href="/privacy" className="hover:text-emerald-800">
+                    Privacy Policy
+                  </Link>
+                  <Link href="/terms" className="hover:text-emerald-800">
+                    Terms
+                  </Link>
+                  <Link href="/staff/login" className="hover:text-emerald-800 text-gray-400">
+                    Staff Desk
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Copyright Strip */}
+            <div className="border-t border-gray-200 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+              <p>
+                Furrowmark Multan Agricultural Supplies. All formulator brand marks belong to their respective holders.
+              </p>
+              <p>
+                Certified Formulations · First-Expired, First-Out (FEFO) Dispatch
+              </p>
+            </div>
           </div>
         </footer>
 
+        {/* Mobile Fixed Bottom Navigation Bar */}
+        <MobileBottomNav cartCount={cartCount} />
+
+        {/* Interactive Agronomic Chat Assistant */}
         <ChatWidget />
       </body>
     </html>
