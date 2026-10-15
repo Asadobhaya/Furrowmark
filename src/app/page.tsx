@@ -243,7 +243,7 @@ export default async function HomePage() {
               Need Field Advisory or Bulk Consignment Dispatch?
             </h2>
             <p className="text-gray-300 text-xs md:text-sm max-w-2xl leading-relaxed">
-              Visit our physical depot at Grain & Seed Market, Multan, or file a support ticket for crop dosage advisory, bulk commercial seed bookings, and Goods Transport (Biltee) logistics.
+              Visit our physical depot at Basti Bair Wala, Mouza Mardan Pur, Multan, or file a support ticket for crop dosage advisory, bulk commercial seed bookings, and Goods Transport (Biltee) logistics.
             </p>
           </div>
 

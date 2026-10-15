@@ -108,7 +108,10 @@ export default function AboutPage() {
       <section className="bg-gray-50 border border-gray-200 rounded-2xl p-6 text-sm text-gray-700 space-y-3">
         <h3 className="font-bold text-gray-900 text-base">Visit Our Multan Depot</h3>
         <p>
-          Farmers, corporate growers, and agronomists are welcome to visit our physical facility at Grain & Seed Market, Khanewal Road, Multan, Punjab.
+          Farmers, corporate growers, and agronomists are welcome to visit our physical facility at Basti Bair Wala, Mouza Mardan Pur, Multan. Helpline (WhatsApp):{" "}
+          <a href="https://wa.me/923005534323" target="_blank" rel="noopener noreferrer" className="text-emerald-700 font-semibold hover:underline">+92 300 5534323</a>
+          {" · "}
+          <a href="https://wa.me/923004634494" target="_blank" rel="noopener noreferrer" className="text-emerald-700 font-semibold hover:underline">+92 300 4634494</a>
         </p>
         <div className="flex flex-wrap gap-4 pt-1">
           <Link

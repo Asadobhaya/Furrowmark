@@ -68,28 +68,34 @@ export default async function ContactPage({ searchParams }: Props) {
                 <p className="font-medium text-gray-900 mt-0.5">
                   Furrowmark Agricultural Depot
                   <br />
-                  Grain & Seed Market, Khanewal Road
+                  Basti Bair Wala, Mouza Mardan Pur
                   <br />
-                  Multan, Punjab 60000, Pakistan
+                  Multan, Punjab, Pakistan
                 </p>
               </div>
 
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Helpline & Telephone:
+                  Helpline (Tap to chat on WhatsApp):
                 </p>
-                <p className="font-medium text-gray-900 mt-0.5">
-                  +92 (61) 450-8890 (Depot Exchange)
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  WhatsApp Direct Dispatch Desk:
-                </p>
-                <p className="font-medium text-gray-900 mt-0.5">
-                  +92 (300) 463-4494
-                </p>
+                <div className="flex flex-col gap-2 mt-1">
+                  <a
+                    href="https://wa.me/923005534323"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 w-fit bg-green-600 hover:bg-green-700 text-white font-semibold px-3 py-1.5 rounded-lg transition"
+                  >
+                    WhatsApp: +92 300 5534323
+                  </a>
+                  <a
+                    href="https://wa.me/923004634494"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 w-fit bg-green-600 hover:bg-green-700 text-white font-semibold px-3 py-1.5 rounded-lg transition"
+                  >
+                    WhatsApp: +92 300 4634494
+                  </a>
+                </div>
               </div>
 
               <div>

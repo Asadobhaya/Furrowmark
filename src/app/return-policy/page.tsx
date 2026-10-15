@@ -96,7 +96,7 @@ export default function ReturnPolicyPage() {
             <Link href="/contact" className="text-emerald-700 font-semibold hover:underline">
               furrowmark.pk/contact
             </Link>{" "}
-            or contact our Multan desk via WhatsApp at <strong>+92 (300) 463-4494</strong>. Quote your Public Order Reference (e.g. FM-2026-XXXX-XXXX).
+            or contact our Multan desk via WhatsApp at <a href="https://wa.me/923004634494" target="_blank" rel="noopener noreferrer" className="font-bold text-emerald-700 hover:underline">+92 300 4634494</a> or <a href="https://wa.me/923005534323" target="_blank" rel="noopener noreferrer" className="font-bold text-emerald-700 hover:underline">+92 300 5534323</a>. Quote your Public Order Reference (e.g. FM-2026-XXXX-XXXX).
           </p>
           <p>
             <strong>Step 2: Submit Verification Evidence.</strong> Provide clear photos of the courier shipping label, the damaged area or wrong SKU, and the printed lot/batch number on the pack.

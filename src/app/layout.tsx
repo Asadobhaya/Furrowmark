@@ -84,7 +84,24 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* Secure Payment and Depot Information Footer */}
           <div className="max-w-6xl mx-auto border-t border-gray-200 pt-4 text-xs text-gray-500 flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
             <p>
-              <strong>Depot Address:</strong> Grain & Seed Market, Khanewal Road, Multan, Punjab · Helpline: +92 (61) 450-8890
+              <strong>Depot Address:</strong> Basti Bair Wala, Mouza Mardan Pur, Multan · Helpline (WhatsApp):{" "}
+              <a
+                href="https://wa.me/923005534323"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-700 font-semibold hover:underline"
+              >
+                +92 300 5534323
+              </a>
+              {" · "}
+              <a
+                href="https://wa.me/923004634494"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-700 font-semibold hover:underline"
+              >
+                +92 300 4634494
+              </a>
             </p>
             <p>
               <strong>Payment Security:</strong> Advance bank transfer details are provided securely after order checkout.

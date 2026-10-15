@@ -30,7 +30,7 @@ export default function TermsOfServicePage() {
           Federal Seed Certification Registration: <strong>FSCRD-PB-5592</strong> (FSC&RD, Ministry of National Food Security & Research, Government of Pakistan).
         </p>
         <p>
-          Registered Depot: Grain & Seed Market, Khanewal Road, Multan, Punjab, Pakistan.
+          Registered Depot: Basti Bair Wala, Mouza Mardan Pur, Multan, Punjab, Pakistan.
         </p>
       </div>
 
