@@ -3,6 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 import { Navbar } from "./components/Navbar";
 import { MobileBottomNav } from "./components/MobileBottomNav";
+import { Logo } from "./components/Logo";
 import { getCartId, getCustomerSession, getStaffSession } from "@/modules/web/session";
 import { CartService } from "@/modules/cart/service";
 
@@ -50,14 +51,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {/* Col 1: Dealership Identity & Location */}
               <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-800 flex items-center justify-center text-white text-xs font-bold">
-                    FM
-                  </div>
-                  <span className="font-extrabold text-base text-emerald-950 tracking-tight">
-                    Furrowmark Multan
-                  </span>
-                </div>
+                <Logo size="sm" showSubtext={false} />
                 <p className="text-xs text-gray-500 leading-relaxed">
                   Licensed direct-distribution depot supplying verified formulator-sealed seeds, crop protection chemicals, and fertilizers to growers across Pakistan.
                 </p>

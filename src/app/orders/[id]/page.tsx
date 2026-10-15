@@ -7,6 +7,7 @@ import { RECEIVING_ACCOUNTS } from "@/modules/payments/accounts";
 import { getCustomerSession } from "@/modules/web/session";
 import { formatPKR } from "../../format";
 import { CopyButton } from "../../components/CopyButton";
+import { OwnerWhatsAppNotifier } from "../../components/OwnerWhatsAppNotifier";
 
 export const metadata = {
   title: "Order Confirmation | Furrowmark",
@@ -27,10 +28,15 @@ const STATE_LABELS: Record<string, { label: string; color: string }> = {
 
 export default async function OrderConfirmationPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams?: Promise<{ new?: string }>;
 }) {
   const { id } = await params;
+  const sParams = await searchParams;
+  const isNewOrder = sParams?.new === "1";
+
   const session = await getCustomerSession();
   if (!session) redirect(`/login?next=/orders/${id}`);
 
@@ -44,16 +50,62 @@ export default async function OrderConfirmationPage({
     color: "bg-gray-100 text-gray-800 border-gray-300",
   };
 
-  const whatsappNotifyUrl = `https://wa.me/923005534323?text=${encodeURIComponent(
-    `Hello Furrowmark Multan Depot, I placed order ${order.publicRef} totaling ${formatPKR(
-      order.totalMinor
-    )}. Please confirm consignment dispatch.`
-  )}`;
+  const shipping = (order.shippingAddress ?? {}) as Record<string, string>;
+  const buyerName = shipping.name || "Customer";
+  const buyerPhone = order.customerPhone || shipping.phone || "N/A";
+  const buyerAddress = [shipping.address, shipping.city, shipping.province, shipping.postalCode]
+    .filter(Boolean)
+    .join(", ");
+
+  const itemsListText = lines
+    .map(
+      (l, idx) =>
+        `${idx + 1}. ${l.productNameSnapshot}\n   Qty: ${l.quantity} pack(s) | Rate: ${formatPKR(
+          l.unitPriceMinor
+        )} | Total: ${formatPKR(l.totalMinor)}`
+    )
+    .join("\n");
+
+  const paymentLabel =
+    order.paymentMethod === "advance_payment"
+      ? "Advance Bank Transfer"
+      : "Cash on Delivery (COD)";
+
+  const ownerWhatsAppData =
+    `*NEW ORDER RECEIVED: ${order.publicRef}*\n` +
+    `--------------------------------\n` +
+    `*BUYER DETAILS:*\n` +
+    `• Name: ${buyerName}\n` +
+    `• Phone: ${buyerPhone}\n` +
+    `• Email: ${order.customerEmail}\n` +
+    `• Address: ${buyerAddress}\n` +
+    `--------------------------------\n` +
+    `*ORDERED PRODUCTS & QUANTITIES:*\n` +
+    `${itemsListText}\n` +
+    `--------------------------------\n` +
+    `*PAYMENT & TOTAL:*\n` +
+    `• Subtotal: ${formatPKR(order.subtotalMinor)}\n` +
+    (order.shippingMinor > 0
+      ? `• Shipping: ${formatPKR(order.shippingMinor)}\n`
+      : `• Shipping: Free Delivery\n`) +
+    `• Grand Total: ${formatPKR(order.totalMinor)}\n` +
+    `• Payment Method: ${paymentLabel}\n` +
+    `• Order Ref: ${order.publicRef}\n\n` +
+    `Furrowmark Multan Depot - Basti Bair Wala, Mouza Mardan Pur, Multan`;
 
   return (
     <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-6">
-      {/* Top Success Banner */}
-      <div className="bg-white border border-gray-200/90 rounded-3xl p-6 sm:p-8 shadow-2xs space-y-4">
+      {/* Instant Owner WhatsApp Dispatch Widget */}
+      <OwnerWhatsAppNotifier
+        orderRef={order.publicRef}
+        message={ownerWhatsAppData}
+        isNewOrder={isNewOrder}
+        primaryPhone="923005534323"
+        secondaryPhone="923004634494"
+      />
+
+      {/* Main Order Details Card */}
+      <div className="bg-white border border-gray-200/90 rounded-3xl p-6 sm:p-8 shadow-2xs space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
@@ -87,6 +139,27 @@ export default async function OrderConfirmationPage({
           </span>
         </div>
 
+        {/* Consignment Destination Details */}
+        <section className="bg-gray-50 border border-gray-200 rounded-2xl p-4 sm:p-5 text-xs sm:text-sm space-y-2">
+          <h2 className="font-bold text-gray-900 border-b border-gray-200 pb-1.5">
+            Consignment Delivery Destination
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-700">
+            <div>
+              <span className="text-gray-500 block text-[11px]">Recipient Name:</span>
+              <strong className="text-gray-900">{buyerName}</strong>
+            </div>
+            <div>
+              <span className="text-gray-500 block text-[11px]">Contact Phone:</span>
+              <strong className="text-gray-900">{buyerPhone}</strong>
+            </div>
+            <div className="sm:col-span-2">
+              <span className="text-gray-500 block text-[11px]">Delivery Address:</span>
+              <span className="text-gray-900 font-medium">{buyerAddress}</span>
+            </div>
+          </div>
+        </section>
+
         {/* Advance Bank Payment Directive */}
         {order.paymentMethod === "advance_payment" && order.state === "pending_payment" && (
           <div className="border border-amber-200 bg-amber-50/60 rounded-2xl p-4 sm:p-5 text-xs sm:text-sm text-amber-950 space-y-3">
@@ -98,6 +171,7 @@ export default async function OrderConfirmationPage({
                 {formatPKR(order.totalMinor)}
               </span>
             </div>
+
             <p className="text-xs text-amber-900 leading-relaxed">
               Transfer <strong>{formatPKR(order.totalMinor)}</strong> to one of our verified business accounts below. Please mention reference <strong>{order.publicRef}</strong> in the transfer remarks.
             </p>
@@ -117,20 +191,6 @@ export default async function OrderConfirmationPage({
                   <CopyButton textToCopy={acc.accountNumber} label="Copy Account" />
                 </div>
               ))}
-            </div>
-
-            <div className="pt-2">
-              <a
-                href={whatsappNotifyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition active:scale-95 shadow-2xs"
-              >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.874.801 2.791.801 3.18 0 5.767-2.587 5.767-5.766.001-3.182-2.585-5.787-5.767-5.787zm3.377 8.219c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.072-.494-1.637-.674-2.678-2.336-2.76-2.444-.081-.108-.66-1.876-.66-1.677 0-.796.417-1.189.566-1.343.149-.153.324-.192.433-.192.108 0 .216.002.311.007.1.005.234-.038.366.279.135.327.461 1.124.502 1.206.041.082.069.177.014.286-.054.108-.082.176-.162.272-.081.096-.17.214-.243.287-.081.082-.165.171-.071.334.095.162.42 1.002.902 1.431.62.551 1.143.722 1.305.803.163.082.257.069.351-.041.095-.109.405-.472.513-.635.109-.163.217-.136.365-.082.149.054.945.446 1.107.527.162.082.27.122.311.19.041.069.041.405-.103.81zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.175L2 22l4.966-1.385A9.954 9.954 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
-                </svg>
-                <span>WhatsApp Receipt Screenshot to Multan Depot Desk</span>
-              </a>
             </div>
           </div>
         )}

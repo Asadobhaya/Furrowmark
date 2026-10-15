@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { Logo } from "./Logo";
+
 interface NavbarProps {
   cartCount?: number;
   userEmail?: string;
@@ -70,20 +72,8 @@ export function Navbar({ cartCount = 0, userEmail, isStaff = false }: NavbarProp
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200/90 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="w-9 h-9 rounded-xl bg-emerald-800 flex items-center justify-center text-white shadow-xs group-hover:bg-emerald-900 transition">
-              <svg className="w-5 h-5 text-emerald-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18m0-18c-4 0-8 3-8 8 0 4 3 7 8 7m0-15c4 0 8 3 8 8 0 4-3 7-8 7m-8-7h16" />
-              </svg>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold text-lg sm:text-xl text-emerald-950 tracking-tight leading-none group-hover:text-emerald-800 transition">
-                Furrowmark
-              </span>
-              <span className="text-[10px] text-gray-500 font-medium tracking-wide uppercase mt-0.5">
-                Agricultural Inputs Depot
-              </span>
-            </div>
+          <Link href="/" className="flex items-center shrink-0 group">
+            <Logo size="md" />
           </Link>
 
           {/* Desktop Search Bar */}

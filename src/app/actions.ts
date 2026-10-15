@@ -329,7 +329,7 @@ export async function submitOrderAction(formData: FormData) {
   } catch (e) {
     fail("/checkout", e instanceof Error ? e.message : "Could not place order");
   }
-  redirect(`/orders/${orderId}`);
+  redirect(`/orders/${orderId}?new=1`);
 }
 
 // ---------- Staff ----------

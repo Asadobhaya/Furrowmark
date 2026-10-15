@@ -3,6 +3,9 @@ import { RECEIVING_ACCOUNTS } from "../payments/accounts";
 export interface TemplateContext {
   orderRef: string;
   customerName?: string;
+  customerPhone?: string;
+  deliveryAddress?: string;
+  itemsSummary?: string;
   totalPkr?: string;
   paymentMethod?: string;
   transactionRef?: string;
@@ -18,6 +21,27 @@ export interface RenderedTemplate {
 export class TemplateRegistry {
   static render(templateId: string, ctx: TemplateContext): RenderedTemplate {
     switch (templateId) {
+      case "owner_order_alert": {
+        return {
+          subject: `NEW ORDER ALERT: ${ctx.orderRef}`,
+          body:
+            `NEW ORDER RECEIVED: ${ctx.orderRef}\n` +
+            `--------------------------------\n` +
+            `BUYER DETAILS:\n` +
+            `• Name: ${ctx.customerName ?? "Valued Customer"}\n` +
+            `• Phone: ${ctx.customerPhone ?? "N/A"}\n` +
+            `• Delivery Address: ${ctx.deliveryAddress ?? "Multan"}\n` +
+            `--------------------------------\n` +
+            `ORDERED PRODUCTS & QUANTITIES:\n` +
+            `${ctx.itemsSummary ?? "See order details"}\n` +
+            `--------------------------------\n` +
+            `ORDER TOTAL: ${ctx.totalPkr ?? "PKR"}\n` +
+            `Payment Method: ${ctx.paymentMethod ?? "COD"}` +
+            (ctx.transactionRef ? `\nTransaction Ref: ${ctx.transactionRef}` : "") +
+            `\nFurrowmark Multan Depot Dispatch Queue`,
+        };
+      }
+
       case "order_created_advance": {
         const accountsText = RECEIVING_ACCOUNTS.map(
           (a) => `${a.label}: ${a.accountTitle} (${a.accountNumber})`,

@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
+import { Logo } from "../components/Logo";
 
 export const metadata = {
   title: "About Us & Dealership Credentials | Furrowmark",
@@ -11,14 +12,19 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="max-w-4xl mx-auto p-4 md:p-8 space-y-8">
-      {/* Title */}
-      <div className="border-b pb-4">
-        <h1 className="text-3xl font-bold text-gray-900">
-          About Furrowmark Agricultural Dealership
-        </h1>
-        <p className="text-sm text-gray-600 mt-1">
-          Certified Genuine Farm Supplies · Punjab Pesticide Dealer License DEP/MLT-AGRO/2024-8841
-        </p>
+      {/* Title with Logo */}
+      <div className="border-b pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            About Furrowmark Agricultural Dealership
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            Certified Genuine Farm Supplies · Punjab Pesticide Dealer License DEP/MLT-AGRO/2024-8841
+          </p>
+        </div>
+        <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-2xl shrink-0 self-start sm:self-auto">
+          <Logo size="md" />
+        </div>
       </div>
 
       {/* Mission */}

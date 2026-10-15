@@ -84,5 +84,41 @@ export async function placeOrder(userId: string, input: CheckoutInput) {
     },
   });
 
+  // Enqueue instant notification to Owner on WhatsApp (+92 300 5534323 & +92 300 4634494)
+  const fullDetails = await OrderService.getOrderDetails(order.id).catch(() => null);
+  const itemsSummary =
+    fullDetails?.lines
+      ?.map(
+        (l, idx) =>
+          `${idx + 1}. ${l.productNameSnapshot} x ${l.quantity} = PKR ${(l.totalMinor / 100).toFixed(2)}`
+      )
+      .join("\n") ?? "";
+
+  const shippingAddr = input.shipping;
+  const addressFormatted = `${shippingAddr.address}, ${shippingAddr.city}, ${shippingAddr.province} (${shippingAddr.postalCode})`;
+
+  for (const ownerPhone of ["+923005534323", "+923004634494"]) {
+    await NotificationService.enqueueNotification({
+      channel: "whatsapp",
+      recipient: ownerPhone,
+      templateId: "owner_order_alert",
+      context: {
+        orderRef: order.publicRef,
+        customerName: shippingAddr.name,
+        customerPhone: input.phone,
+        deliveryAddress: addressFormatted,
+        itemsSummary,
+        totalPkr: `PKR ${(order.totalMinor / 100).toFixed(2)}`,
+        paymentMethod:
+          input.method === "advance_payment"
+            ? "Advance Bank Transfer"
+            : "Cash on Delivery",
+        transactionRef: input.transactionReference,
+      },
+    }).catch(() => {
+      // Non-blocking background enqueue
+    });
+  }
+
   return { ...order, paymentInstructions: session.metadata ?? null };
 }

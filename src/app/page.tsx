@@ -4,6 +4,7 @@ import Link from "next/link";
 import { searchProducts } from "@/modules/catalog/service";
 import { formatPKR } from "./format";
 import { ProductImage } from "./components/ProductImage";
+import { Logo } from "./components/Logo";
 
 export const metadata = {
   title: "Furrowmark | Licensed Agricultural Inputs & Agrochemicals Store",
@@ -60,8 +61,13 @@ export default async function HomePage() {
   return (
     <main className="space-y-8 sm:space-y-12 pb-8 sm:pb-12">
       {/* Hero Banner with Search & Direct Helpline */}
-      <section className="bg-emerald-950 text-white pt-10 sm:pt-16 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 border-b border-emerald-900 shadow-inner">
-        <div className="max-w-5xl mx-auto space-y-6 text-center">
+      <section className="bg-emerald-950 text-white pt-10 sm:pt-14 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 border-b border-emerald-900 shadow-inner">
+        <div className="max-w-5xl mx-auto space-y-6 text-center flex flex-col items-center">
+          {/* Official Enterprise Emblem & Logo */}
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-emerald-900/60 border border-emerald-800 shadow-md">
+            <Logo size="lg" variant="light" />
+          </div>
+
           {/* Regulatory Credentials Badge */}
           <div className="inline-flex flex-wrap items-center justify-center gap-2 bg-emerald-900/80 border border-emerald-700/60 px-3.5 py-1.5 rounded-full text-xs font-medium text-emerald-200 shadow-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
