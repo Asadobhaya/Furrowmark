@@ -13,8 +13,8 @@ This document contains the official knowledge base, technical agronomic specific
   Basti Bair Wala, Mouza Mardan Pur
   Multan, Punjab, Pakistan
 - Official Helplines (Voice & WhatsApp):
-  - Primary WhatsApp Hotline: +92 300 5534323 (Direct URL: https://wa.me/923005534323)
-  - Secondary WhatsApp Helpline: +92 300 4634494 (Direct URL: https://wa.me/923004634494)
+  - Primary WhatsApp Hotline: +92 300 5534323 (Direct URL: https://wa.me/923005534323?text=Hello%20Furrowmark!%20I%20want%20to%20get%20information%20about%20your%20agricultural%20products,%20stock%20availability,%20and%20current%20prices.%20Please%20guide%20me.)
+  - Secondary WhatsApp Helpline: +92 300 4634494 (Direct URL: https://wa.me/923004634494?text=Hello%20Furrowmark!%20I%20want%20to%20get%20information%20about%20your%20agricultural%20products,%20stock%20availability,%20and%20current%20prices.%20Please%20guide%20me.)
 - Support Email: support@furrowmark.pk
 - Operating Hours:
   - Monday to Saturday: 8:00 AM to 6:00 PM PKT

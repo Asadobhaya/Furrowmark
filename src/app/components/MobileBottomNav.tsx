@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getGeneralWhatsAppUrl } from "../whatsapp";
 
 interface MobileBottomNavProps {
   cartCount?: number;
@@ -68,7 +69,7 @@ export function MobileBottomNav({ cartCount = 0 }: MobileBottomNavProps) {
 
       {/* WhatsApp Advisory Hotline */}
       <a
-        href="https://wa.me/923005534323"
+        href={getGeneralWhatsAppUrl()}
         target="_blank"
         rel="noopener noreferrer"
         className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-green-600 hover:text-green-700 transition"

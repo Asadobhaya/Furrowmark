@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "./components/Navbar";
 import { MobileBottomNav } from "./components/MobileBottomNav";
 import { Logo } from "./components/Logo";
+import { getGeneralWhatsAppUrl } from "./whatsapp";
 import { getCartId, getCustomerSession, getStaffSession } from "@/modules/web/session";
 import { CartService } from "@/modules/cart/service";
 
@@ -106,7 +107,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                 </h3>
                 <div className="space-y-2">
                   <a
-                    href="https://wa.me/923005534323"
+                    href={getGeneralWhatsAppUrl("923005534323")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-semibold px-3 py-2 rounded-xl text-xs transition border border-emerald-200 w-full"
@@ -115,7 +116,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                     <span>WhatsApp: +92 300 5534323</span>
                   </a>
                   <a
-                    href="https://wa.me/923004634494"
+                    href={getGeneralWhatsAppUrl("923004634494")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-semibold px-3 py-2 rounded-xl text-xs transition border border-emerald-200 w-full"

@@ -5,6 +5,7 @@ import { searchProducts } from "@/modules/catalog/service";
 import { formatPKR } from "./format";
 import { ProductImage } from "./components/ProductImage";
 import { Logo } from "./components/Logo";
+import { getGeneralWhatsAppUrl, getAdvisoryWhatsAppUrl } from "./whatsapp";
 
 export const metadata = {
   title: "Furrowmark | Licensed Agricultural Inputs & Agrochemicals Store",
@@ -121,7 +122,7 @@ export default async function HomePage() {
               </svg>
             </Link>
             <a
-              href="https://wa.me/923005534323"
+              href={getGeneralWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-600 hover:bg-green-700 active:scale-95 text-white font-semibold px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition shadow-sm text-xs sm:text-sm flex items-center gap-2"
@@ -338,7 +339,7 @@ export default async function HomePage() {
 
           <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
             <a
-              href="https://wa.me/923005534323"
+              href={getAdvisoryWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white text-xs sm:text-sm font-semibold px-5 py-3 rounded-xl transition shadow-xs flex items-center justify-center gap-2 active:scale-95"

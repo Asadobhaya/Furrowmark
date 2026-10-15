@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { Logo } from "../components/Logo";
+import { getGeneralWhatsAppUrl } from "../whatsapp";
 
 export const metadata = {
   title: "About Us & Dealership Credentials | Furrowmark",
@@ -115,9 +116,9 @@ export default function AboutPage() {
         <h3 className="font-bold text-gray-900 text-base">Visit Our Multan Depot</h3>
         <p>
           Farmers, corporate growers, and agronomists are welcome to visit our physical facility at Basti Bair Wala, Mouza Mardan Pur, Multan. Helpline (WhatsApp):{" "}
-          <a href="https://wa.me/923005534323" target="_blank" rel="noopener noreferrer" className="text-emerald-700 font-semibold hover:underline">+92 300 5534323</a>
+          <a href={getGeneralWhatsAppUrl("923005534323")} target="_blank" rel="noopener noreferrer" className="text-emerald-700 font-semibold hover:underline">+92 300 5534323</a>
           {" · "}
-          <a href="https://wa.me/923004634494" target="_blank" rel="noopener noreferrer" className="text-emerald-700 font-semibold hover:underline">+92 300 4634494</a>
+          <a href={getGeneralWhatsAppUrl("923004634494")} target="_blank" rel="noopener noreferrer" className="text-emerald-700 font-semibold hover:underline">+92 300 4634494</a>
         </p>
         <div className="flex flex-wrap gap-4 pt-1">
           <Link

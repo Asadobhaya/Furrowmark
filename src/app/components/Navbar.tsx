@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Logo } from "./Logo";
+import { getGeneralWhatsAppUrl } from "../whatsapp";
 
 interface NavbarProps {
   cartCount?: number;
@@ -46,7 +47,7 @@ export function Navbar({ cartCount = 0, userEmail, isStaff = false }: NavbarProp
           </div>
           <div className="flex items-center gap-3 shrink-0">
             <a
-              href="https://wa.me/923005534323"
+              href={getGeneralWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white font-medium transition"
@@ -255,7 +256,7 @@ export function Navbar({ cartCount = 0, userEmail, isStaff = false }: NavbarProp
             {/* Direct WhatsApp Callout in Mobile Drawer */}
             <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
               <a
-                href="https://wa.me/923005534323"
+                href={getGeneralWhatsAppUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 text-sm shadow-xs transition"

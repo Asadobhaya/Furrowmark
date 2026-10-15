@@ -7,6 +7,7 @@ import { getProductById } from "@/modules/catalog/service";
 import { getProductSpecification } from "@/modules/catalog/specifications";
 import { ProductImage } from "../../components/ProductImage";
 import { ProductBuyControls } from "../../components/ProductBuyControls";
+import { getProductWhatsAppUrl } from "../../whatsapp";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -39,9 +40,10 @@ export default async function ProductDetailPage({ params, searchParams }: Props)
   const spec = getProductSpecification(product.slug);
   const primaryVariant = product.variants[0];
 
-  const whatsappInquiryUrl = `https://wa.me/923005534323?text=${encodeURIComponent(
-    `Hello Furrowmark Depot, I am inquiring about ${product.name} (${product.brandName}). Please provide dosage and availability guidance.`
-  )}`;
+  const whatsappInquiryUrl = getProductWhatsAppUrl(
+    product.name,
+    product.brandName
+  );
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">

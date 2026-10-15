@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { submitSupportTicketAction } from "../actions";
+import { getGeneralWhatsAppUrl } from "../whatsapp";
 
 export const metadata = {
   title: "Contact & Agronomic Support | Furrowmark",
@@ -81,7 +82,7 @@ export default async function ContactPage({ searchParams }: Props) {
                 </p>
                 <div className="flex flex-col gap-2 mt-2">
                   <a
-                    href="https://wa.me/923005534323"
+                    href={getGeneralWhatsAppUrl("923005534323")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 w-full sm:w-fit bg-green-600 hover:bg-green-700 active:scale-95 text-white font-bold px-4 py-2.5 rounded-xl transition text-xs shadow-2xs"
@@ -92,7 +93,7 @@ export default async function ContactPage({ searchParams }: Props) {
                     <span>WhatsApp: +92 300 5534323</span>
                   </a>
                   <a
-                    href="https://wa.me/923004634494"
+                    href={getGeneralWhatsAppUrl("923004634494")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 w-full sm:w-fit bg-green-600 hover:bg-green-700 active:scale-95 text-white font-bold px-4 py-2.5 rounded-xl transition text-xs shadow-2xs"
