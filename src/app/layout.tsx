@@ -38,6 +38,26 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           className="chatzy_widget_script"
           defer
         />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @media (max-width: 768px) {
+                :root {
+                  --chatzy-icon-width: 56px !important;
+                  --chatzy-icon-height: 56px !important;
+                }
+                .chatzy-chatbot-wrapper {
+                  bottom: 4.75rem !important;
+                  right: 1rem !important;
+                  margin: 0 !important;
+                }
+                body:has(.product-mobile-bar) .chatzy-chatbot-wrapper {
+                  bottom: 8.5rem !important;
+                }
+              }
+            `,
+          }}
+        />
       </head>
       <body className="min-h-screen flex flex-col bg-slate-50 text-gray-900 antialiased selection:bg-emerald-100 selection:text-emerald-900 pb-16 md:pb-0">
         {/* Responsive Navbar with Desktop & Mobile Menus */}

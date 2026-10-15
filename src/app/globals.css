@@ -37,3 +37,21 @@ button, a {
 input:focus, select:focus, textarea:focus {
   outline: none;
 }
+
+/* Mobile chatbot position clearing bottom navigation bar */
+@media (max-width: 768px) {
+  :root {
+    --chatzy-icon-width: 56px !important;
+    --chatzy-icon-height: 56px !important;
+  }
+
+  .chatzy-chatbot-wrapper {
+    bottom: 4.75rem !important;
+    right: 1rem !important;
+    margin: 0 !important;
+  }
+
+  body:has(.product-mobile-bar) .chatzy-chatbot-wrapper {
+    bottom: 8.5rem !important;
+  }
+}

@@ -138,7 +138,7 @@ export function ProductBuyControls({
 
       {/* Mobile Sticky Quick-Action Bar */}
       {selectedVariant && (
-        <div className="md:hidden fixed bottom-14 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-gray-200 px-4 py-2 flex items-center justify-between shadow-md">
+        <div className="product-mobile-bar md:hidden fixed bottom-14 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-gray-200 px-4 py-2 flex items-center justify-between shadow-md">
           <div>
             <span className="text-[10px] text-gray-500 block leading-tight">
               {selectedVariant.packSize}
