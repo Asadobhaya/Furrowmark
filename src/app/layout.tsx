@@ -3,7 +3,6 @@ import Link from "next/link";
 import "./globals.css";
 import { Navbar } from "./components/Navbar";
 import { MobileBottomNav } from "./components/MobileBottomNav";
-import { ChatWidget } from "./components/ChatWidget";
 import { getCartId, getCustomerSession, getStaffSession } from "@/modules/web/session";
 import { CartService } from "@/modules/cart/service";
 
@@ -25,6 +24,19 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   return (
     <html lang="en">
+      <head>
+        {/* Chatzy Embedded Chatbot Widget */}
+        <link
+          rel="stylesheet"
+          href="https://chatzy-kb-store.s3.amazonaws.com/icons/5ab07987-b5db-477c-82ff-1287e0883acb"
+        />
+        <script
+          src="https://chatzy-kb-store.s3.amazonaws.com/icons/56706cc4-b3ba-4eba-9610-f2fb07008a5c"
+          id="c72e045b-76f8-4307-894a-57c318fdb495"
+          className="chatzy_widget_script"
+          defer
+        />
+      </head>
       <body className="min-h-screen flex flex-col bg-slate-50 text-gray-900 antialiased selection:bg-emerald-100 selection:text-emerald-900 pb-16 md:pb-0">
         {/* Responsive Navbar with Desktop & Mobile Menus */}
         <Navbar cartCount={cartCount} userEmail={activeEmail} isStaff={isStaff} />
@@ -175,9 +187,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
         {/* Mobile Fixed Bottom Navigation Bar */}
         <MobileBottomNav cartCount={cartCount} />
-
-        {/* Interactive Agronomic Chat Assistant */}
-        <ChatWidget />
       </body>
     </html>
   );
